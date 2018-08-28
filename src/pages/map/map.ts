@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
+
+declare var google;
 
 @Component({
   selector: 'page-map',
@@ -7,8 +9,22 @@ import { NavController } from 'ionic-angular';
 })
 export class MapPage {
 
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+
   constructor(public navCtrl: NavController) {
   
+  }
+
+  ionViewDidLoad(){
+    this.loadMap();
+  }
+
+  loadMap() {
+    this.map = new google.maps.Map(this.mapElement.nativeElement, {
+      center: {lat: 34.075, lng: 134.515},
+      zoom: 8
+    });
   }
 
 }
