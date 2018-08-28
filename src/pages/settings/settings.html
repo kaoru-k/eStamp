@@ -7,12 +7,44 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>settings</ion-title>
+    <ion-title>設定</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list-header>
+    基本設定
+  </ion-list-header>
+    <ion-item>
+      <ion-label>設定1</ion-label>
+      <ion-toggle [(ngModel)] = "setting1"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>設定2</ion-label>
+      <ion-toggle [(ngModel)] = "setting2"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>設定3</ion-label>
+      <ion-toggle [(ngModel)] = "setting3"></ion-toggle>
+    </ion-item>
+  <ion-list-header>
+    応用設定
+  </ion-list-header>
+  <ion-list radio-group [(ngModel)] = "radio">
+    <ion-item>
+      <ion-label>設定1</ion-label>
+      <ion-radio value = "setting1a" checked></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>設定2</ion-label>
+      <ion-radio value = "setting2a"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>設定3</ion-label>
+      <ion-radio value = "setting3a"></ion-radio>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

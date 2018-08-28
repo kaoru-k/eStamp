@@ -17,10 +17,10 @@ export class MapPage {
   }
 
   ionViewDidLoad(){
-    this.loadMap();
+    this.loadMapJS();
   }
 
-  loadMap() {
+  loadMapJS() {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: {lat: 34.075, lng: 134.515},
       zoom: 8
