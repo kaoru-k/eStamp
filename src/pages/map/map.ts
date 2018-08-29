@@ -18,7 +18,7 @@ export class MapPage {
   }
 
   ionViewDidLoad(){
-    this.showLocation();
+    // this.showLocation();
     // this.loadMapJS();
   }
 

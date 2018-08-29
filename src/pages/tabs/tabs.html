@@ -1,5 +1,7 @@
 <ion-fab right bottom>
-  <button ion-fab color="primary"><ion-icon name="pin"></ion-icon></button>
+  <button ion-fab color="primary" (click)="onClick()">
+    <ion-icon name="pin"></ion-icon>
+  </button>
 </ion-fab>
 <ion-tabs>
   <ion-tab [root]="tab1Root" tabTitle="マップ" tabIcon="map"></ion-tab>
