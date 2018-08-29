@@ -32,9 +32,15 @@ export class MapPage {
         title: 'Lat and Lng',
         subTitle: 'lat = ' + latlng.lat + ' , lng = ' + latlng.lng,
         buttons: ['Close']
-      });
+      })
       alert.present();
-
+    }).catch((error) => {
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'Error getting location' + error,
+        buttons: ['Close']
+      })
+      alert.present();
     });
   }
 
