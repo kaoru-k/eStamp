@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { GoogleMaps, GoogleMap, GoogleMapsEvent } from '@ionic-native/google-maps';
 
 declare var google;
 
@@ -12,6 +13,7 @@ export class MapPage {
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
+  // map: GoogleMap;
 
   constructor(public navCtrl: NavController, public geolocation: Geolocation, public alertCtrl: AlertController) {
   
@@ -19,7 +21,8 @@ export class MapPage {
 
   ionViewDidLoad(){
     // this.showLocation();
-    // this.loadMapJS();
+    this.loadMapJS();
+    // this.loadMap();
   }
 
   showLocation() {
@@ -45,11 +48,18 @@ export class MapPage {
   }
 
   loadMapJS() {
-
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: {lat: 34.075, lng: 134.515},
       zoom: 8
     });
   }
+
+  // loadMap() {
+  //   console.log('Load Map.');
+  //   this.map = GoogleMaps.create('map');
+  //   this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+  //     console.log('Map Ready.');
+  //   });
+  // }
 
 }
