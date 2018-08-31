@@ -1,9 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent } from '@ionic-native/google-maps';
+import { GoogleMaps, GoogleMap, MyLocation, LocationService, GoogleMapOptions } from '@ionic-native/google-maps';
 
-declare var google;
+// declare var google; // loadMapJS
 
 @Component({
   selector: 'page-map',
@@ -12,17 +12,18 @@ declare var google;
 export class MapPage {
 
   @ViewChild('map') mapElement: ElementRef;
-  map: any;
-  // map: GoogleMap;
+  // map: any; // loadMapJS
+  map: GoogleMap;
 
-  constructor(public navCtrl: NavController, public geolocation: Geolocation, public alertCtrl: AlertController) {
-  
+  constructor(private platform: Platform, public navCtrl: NavController, public geolocation: Geolocation, public alertCtrl: AlertController) {
+    this.platform.ready().then(() => {
+      this.loadMap();
+    });
   }
 
   ionViewDidLoad(){
-    // this.showLocation();
-    this.loadMapJS();
-    // this.loadMap();
+    // this.loadMapJS();
+    this.loadMap();
   }
 
   showLocation() {
@@ -47,19 +48,22 @@ export class MapPage {
     });
   }
 
-  loadMapJS() {
-    this.map = new google.maps.Map(this.mapElement.nativeElement, {
-      center: {lat: 34.075, lng: 134.515},
-      zoom: 8
-    });
-  }
-
-  // loadMap() {
-  //   console.log('Load Map.');
-  //   this.map = GoogleMaps.create('map');
-  //   this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-  //     console.log('Map Ready.');
+  // loadMapJS() {
+  //   this.map = new google.maps.Map(this.mapElement.nativeElement, {
+  //     center: {lat: 34.075, lng: 134.515},
+  //     zoom: 8
   //   });
   // }
+
+  loadMap() {
+    LocationService.getMyLocation().then((myLocation: MyLocation) => {
+      let options: GoogleMapOptions = {
+        camera: {
+          target: myLocation.latLng
+        }
+      };
+      this.map = GoogleMaps.create('map',options);
+    });
+  }
 
 }
