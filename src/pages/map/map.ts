@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
-import { Geolocation } from '@ionic-native/geolocation';
 import { GoogleMaps, GoogleMap, MyLocation, LocationService, GoogleMapOptions } from '@ionic-native/google-maps';
 
 // declare var google; // loadMapJS
@@ -15,7 +14,7 @@ export class MapPage {
   // map: any; // loadMapJS
   map: GoogleMap;
 
-  constructor(private platform: Platform, public navCtrl: NavController, public geolocation: Geolocation, public alertCtrl: AlertController) {
+  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController) {
     this.platform.ready().then(() => {
       this.loadMap();
     });
@@ -24,28 +23,6 @@ export class MapPage {
   ionViewDidLoad(){
     // this.loadMapJS();
     this.loadMap();
-  }
-
-  showLocation() {
-    this.geolocation.getCurrentPosition().then((position) => {
-      let latlng = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      let alert = this.alertCtrl.create({
-        title: 'Lat and Lng',
-        subTitle: 'lat = ' + latlng.lat + ' , lng = ' + latlng.lng,
-        buttons: ['Close']
-      })
-      alert.present();
-    }).catch((error) => {
-      let alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: 'Error getting location' + error,
-        buttons: ['Close']
-      })
-      alert.present();
-    });
   }
 
   // loadMapJS() {

@@ -14,7 +14,10 @@
 
 
 <ion-content padding>
-    <button ion-button (click)="onClick()">
+    <button ion-button (click)="getLocationButtonOnClick()">
+      <label>位置情報</label>
+    </button>
+    <button ion-button (click)="qrButtonOnClick()">
       <ion-icon name='qr-scanner'></ion-icon>
       <label>QRコード読み取り</label>
     </button>
