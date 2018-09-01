@@ -37,6 +37,11 @@ export class MapPage {
       let options: GoogleMapOptions = {
         camera: {
           target: myLocation.latLng
+        },
+        controls: {
+          'myLocationButton': true,
+          'myLocation': true,
+          'zoom': true
         }
       };
       this.map = GoogleMaps.create('map',options);
