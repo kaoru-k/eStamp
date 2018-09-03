@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
-import { GoogleMaps, GoogleMap, MyLocation, LocationService, GoogleMapOptions } from '@ionic-native/google-maps';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, Marker } from '@ionic-native/google-maps';
 
-// declare var google; // loadMapJS
+// declare var google;
 
 @Component({
   selector: 'page-map',
@@ -22,7 +22,6 @@ export class MapPage {
 
   ionViewDidLoad(){
     // this.loadMapJS();
-    this.loadMap();
   }
 
   // loadMapJS() {
@@ -33,19 +32,33 @@ export class MapPage {
   // }
 
   loadMap() {
-    LocationService.getMyLocation().then((myLocation: MyLocation) => {
-      let options: GoogleMapOptions = {
-        camera: {
-          target: myLocation.latLng
+    let options: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: 34.077,
+          lng: 134.560
         },
-        controls: {
-          'myLocationButton': true,
-          'myLocation': true,
-          'zoom': true
-        }
-      };
-      this.map = GoogleMaps.create('map',options);
+        zoom: 17
+      },
+      controls: {
+        'myLocationButton': true,
+        'myLocation': true,
+      }
+    }
+    this.map = GoogleMaps.create('map',options);
+    this.map.addMarker({
+      title: '徳島大学常三島キャンパス',
+      icon: 'blue',
+      position: {
+        lat: 34.077,
+        lng: 134.560
+      }
+    }).catch((err) =>{
+      alert(err);
     });
   }
 
+  putMarkers() {
+    alert("OK");
+  }
 }
