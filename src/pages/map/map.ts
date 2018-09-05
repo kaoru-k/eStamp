@@ -1,7 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
-import { GoogleMaps, GoogleMap, GoogleMapOptions, Marker } from '@ionic-native/google-maps';
-import { Storage } from '@ionic/storage'
+import { GoogleMaps, GoogleMap, GoogleMapOptions } from '@ionic-native/google-maps';
 
 // declare var google;
 
@@ -15,7 +14,7 @@ export class MapPage {
   // map: any; // loadMapJS
   map: GoogleMap;
 
-  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private storage: Storage) {
+  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController) {
     this.platform.ready().then(() => {
       this.loadMap();
     });
@@ -57,14 +56,9 @@ export class MapPage {
     }).catch((err) =>{
       alert(err);
     });
-
-    this.storage.set('language','ja_JP')
   }
 
-  buttonClick() {
-    this.storage.get('language').then((val) => {
-      // alert(val);
-      let username = val;
-    })
+  putMarkers() {
+    alert("OK");
   }
 }
