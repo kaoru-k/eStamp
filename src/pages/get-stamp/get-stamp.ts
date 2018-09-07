@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation'
 
@@ -16,8 +17,17 @@ import { Geolocation } from '@ionic-native/geolocation'
   templateUrl: 'get-stamp.html',
 })
 export class GetStampPage {
+  public csvItems: any;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public http: HttpClient) {
+  }
+
+  ionViewWillEnter() {
+    this.loadCSV();
+  }
+
+  loadCSV() {
+    this.http.get('/assets/data/kankoshisetsu_edit.csv');
   }
 
   qrButtonOnClick() {
