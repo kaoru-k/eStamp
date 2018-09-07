@@ -23,6 +23,7 @@ export class MapPage {
     this.platform.ready().then(() => {
       this.loadCSV();
       this.loadMap();
+      this.putMarkers();
     });
   }
 
@@ -60,7 +61,7 @@ export class MapPage {
           lat: 34.077,
           lng: 134.560
         },
-        zoom: 17
+        zoom: 12
       },
       controls: {
         'myLocationButton': true,
@@ -71,13 +72,6 @@ export class MapPage {
   }
   
   putMarkers() {
-    this.map.addMarkerSync({
-      title: '徳島大学常三島キャンパス',
-      position: {
-        lat: 34.077,
-        lng: 134.560
-      }
-    });
     this.csvData.forEach((row) =>{
       this.map.addMarkerSync({
         title: row[1],
