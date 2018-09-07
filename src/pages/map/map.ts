@@ -23,7 +23,6 @@ export class MapPage {
     this.platform.ready().then(() => {
       this.loadCSV();
       this.loadMap();
-      this.putMarkers();
     });
   }
 
@@ -69,6 +68,7 @@ export class MapPage {
       }
     }
     this.map = GoogleMaps.create('map',options);
+    this.putMarkers();
   }
   
   putMarkers() {
