@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as papa from 'papaparse';
@@ -18,9 +18,10 @@ import * as papa from 'papaparse';
   templateUrl: 'get-stamp.html',
 })
 export class GetStampPage {
-  public csvItems: any;
+  csvData: any[] = [];
+  headerRow: any[] = [];
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public http: HttpClient) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http) {
   }
 
   ionViewWillEnter() {
@@ -28,7 +29,19 @@ export class GetStampPage {
   }
 
   loadCSV() {
-    this.http.get('/assets/data/kankoshisetsu_edit.csv');
+    this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(
+      data => this.extractData(data),
+    );
+  }
+
+  private extractData(res) {
+    let csvData = res['_body'] || '';
+    let parsedData = papa.parse(csvData).data;
+ 
+    this.headerRow = parsedData[0];
+ 
+    parsedData.splice(0, 1);
+    this.csvData = parsedData;
   }
 
   qrButtonOnClick() {
@@ -70,6 +83,15 @@ export class GetStampPage {
       })
       alert.present();
     });
+  }
+
+  csvButtonOnClick() {
+    let alert = this.alertCtrl.create({
+      title: 'CSV Data',
+      subTitle: this.csvData[0],
+      buttons: ['Close']
+    })
+    alert.present();
   }
 
 }
