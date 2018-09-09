@@ -15,16 +15,46 @@
 
 <ion-content padding>
   <ion-card>
-    最寄りの観光地：{{target}}<br />
-    あと{{distance}}m
+    <ion-grid>
+      <ion-row>
+        <ion-col>最寄りの観光地</ion-col>
+        <ion-col>{{target}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>スタンプゲットまでの距離</ion-col>
+        <ion-col>{{distance}}</ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <button ion-button (click)="updateLocationButtonOnClick()">
+      <label>{{updataLocationButtonCaption}}</label>
+    </button>
+    自動更新:OFF
   </ion-card>
-  <button ion-button (click)="getLocationButtonOnClick()">
-    <label>位置情報</label>
+
+  <button ion-button block disabled="true">
+    スタンプゲット
   </button>
-  <br />
-  <button ion-button (click)="qrButtonOnClick()">
+  <button ion-button block (click)="qrButtonOnClick()">
     <ion-icon name='qr-scanner'></ion-icon>
-    <label>QRコード読み取り</label>
+    QRコードリーダー
   </button>
   <br />
+
+  <ion-list radio-group>
+    <ion-list-header>
+      並び替え
+    </ion-list-header>
+    
+    <ion-item>
+      <ion-label>近い順</ion-label>
+      <ion-radio checked="true" value="distance"></ion-radio>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>スタンプ番号順</ion-label>
+      <ion-radio value="stamp"></ion-radio>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

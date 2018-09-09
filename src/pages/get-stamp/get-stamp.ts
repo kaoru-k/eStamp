@@ -19,7 +19,8 @@ import * as papa from 'papaparse';
 })
 export class GetStampPage {
   public target: string = "";
-  public distance: number = 0;
+  public distance: string = "0";
+  public updataLocationButtonCaption: string = "更新中...";
 
   csvData: any[] = [];
   headerRow: any[] = [];
@@ -30,6 +31,8 @@ export class GetStampPage {
 
   ionViewWillEnter() {
     this.loadCSV();
+    this.updateDistance();
+    this.updataLocationButtonCaption = "位置情報更新";
   }
 
   loadCSV() {
@@ -40,12 +43,33 @@ export class GetStampPage {
 
   private extractData(res) {
     let csvData = res['_body'] || '';
-    let parsedData = papa.parse(csvData).data;
+    this.csvData = papa.parse(csvData,{header:true}).data;
+  }
 
-    this.headerRow = parsedData[0];
+  updateDistance() {
+    this.geolocation.getCurrentPosition().then((position) => {
+      let latlng = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+      this.target = this.csvData[0]['Name'];
+      let distance = this.cd.getDistance({lat: this.csvData[0]['Latitude'], lng: this.csvData[0]['Longitude']}, latlng) - 200;
+      if (distance > 1000) {
+        this.distance = "約" + (distance / 1000).toFixed(1) + "km";
+      } else if (distance <= 200) {
+        this.distance = "到着しました!"
+      } else {
+        this.distance = "約" + Math.round(distance).toString() + "m";
+      }
 
-    parsedData.splice(0, 1);
-    this.csvData = parsedData;
+    }).catch((error) => {
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'Error getting location' + error,
+        buttons: ['Close']
+      })
+      alert.present();
+    });
   }
 
   qrButtonOnClick() {
@@ -67,22 +91,10 @@ export class GetStampPage {
     });
   }
 
-  getLocationButtonOnClick() {
-    this.geolocation.getCurrentPosition().then((position) => {
-      let latlng = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      this.target = this.csvData[0][1];
-      this.distance = this.cd.getDistance({lat: this.csvData[0][3], lng: this.csvData[0][4]}, latlng);
-    }).catch((error) => {
-      let alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: 'Error getting location' + error,
-        buttons: ['Close']
-      })
-      alert.present();
-    });
+  updateLocationButtonOnClick() {
+    this.updataLocationButtonCaption = "更新中...";    
+    this.updateDistance();
+    this.updataLocationButtonCaption = "位置情報更新";
   }
 
 }
