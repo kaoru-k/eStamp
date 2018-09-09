@@ -32,7 +32,7 @@
     自動更新:OFF
   </ion-card>
 
-  <button ion-button block disabled="true">
+  <button ion-button block [disabled]="!getStampButtonIsEnabled" (click)="getStampButtonOnClick()">
     スタンプゲット
   </button>
   <button ion-button block (click)="qrButtonOnClick()">

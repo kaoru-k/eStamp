@@ -19,8 +19,9 @@ import * as papa from 'papaparse';
 })
 export class GetStampPage {
   public target: string = "";
-  public distance: string = "0";
+  public distance: string = "";
   public updataLocationButtonCaption: string = "更新中...";
+  public getStampButtonIsEnabled: boolean = false;
 
   csvData: any[] = [];
   headerRow: any[] = [];
@@ -58,6 +59,7 @@ export class GetStampPage {
         this.distance = "約" + (distance / 1000).toFixed(1) + "km";
       } else if (distance <= 200) {
         this.distance = "到着しました!"
+        this.getStampButtonIsEnabled = true;
       } else {
         this.distance = "約" + Math.round(distance).toString() + "m";
       }
@@ -92,11 +94,14 @@ export class GetStampPage {
   }
 
   updateLocationButtonOnClick() {
-    this.updataLocationButtonCaption = "更新中...";    
+    this.updataLocationButtonCaption = "更新中...";
     this.updateDistance();
     this.updataLocationButtonCaption = "位置情報更新";
   }
 
+  getStampButtonOnClick() {
+    this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+  }
 }
 
 export class CalcDistance {
