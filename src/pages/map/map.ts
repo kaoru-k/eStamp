@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
-import { GoogleMaps, GoogleMap, GoogleMapOptions } from '@ionic-native/google-maps';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
 import { Http } from '@angular/http';
 import * as papa from 'papaparse';
 
@@ -68,7 +68,9 @@ export class MapPage {
       }
     }
     this.map = GoogleMaps.create('map',options);
-    this.putMarkers();
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      this.putMarkers();
+    });
   }
   
   putMarkers() {
