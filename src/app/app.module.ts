@@ -17,11 +17,13 @@ import { GoogleMaps } from "@ionic-native/google-maps";
 import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { MapPopoverPage } from '../pages/map-popover/map-popover';
 
 @NgModule({
   declarations: [
     MyApp,
     MapPage,
+    MapPopoverPage,
     StampBookPage,
     SettingsPage,
     TabsPage,
@@ -38,6 +40,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     MapPage,
+    MapPopoverPage,
     StampBookPage,
     SettingsPage,
     TabsPage,
