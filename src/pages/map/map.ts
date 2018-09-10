@@ -3,6 +3,7 @@ import { NavController, AlertController, Platform } from 'ionic-angular';
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
 import { Http } from '@angular/http';
 import * as papa from 'papaparse';
+import { GetStampPage } from '../get-stamp/get-stamp';
 
 
 // declare var google;
@@ -84,5 +85,9 @@ export class MapPage {
         }
       });
     });
+  }
+
+  getStampButtonOnClick() {
+    this.navCtrl.push(GetStampPage);
   }
 }

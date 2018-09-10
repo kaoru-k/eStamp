@@ -18,8 +18,5 @@ export class TabsPage {
   constructor(public navCtrl:NavController) {
 
   }
-
-  onClick() {
-    this.navCtrl.push(GetStampPage)
-  }
+  
 }

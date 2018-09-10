@@ -1,13 +1,17 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      マップ
-    </ion-title>
+  <ion-navbar color="primary">
+    <ion-title>マップ</ion-title>
+    <ion-buttons end>
+      <button ion-button>表示選択</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <div id="map">
-    <button ion-button>表示選択</button>
-  </div>
+  <ion-fab center bottom>
+    <button ion-fab color="primary" (click)="getStampButtonOnClick()">
+      <ion-icon name="pin"></ion-icon>
+    </button>
+  </ion-fab>
+  <div id="map"></div>
 </ion-content>
