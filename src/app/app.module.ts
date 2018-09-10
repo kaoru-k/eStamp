@@ -9,6 +9,7 @@ import { StampBookPage } from '../pages/stamp-book/stamp-book';
 import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 import { GetStampPage } from '../pages/get-stamp/get-stamp';
+import { StampDialogPage } from '../pages/stamp-dialog/stamp-dialog';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -24,7 +25,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StampBookPage,
     SettingsPage,
     TabsPage,
-    GetStampPage
+    GetStampPage,
+    StampDialogPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StampBookPage,
     SettingsPage,
     TabsPage,
-    GetStampPage
+    GetStampPage,
+    StampDialogPage
   ],
   providers: [
     StatusBar,
