@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
 import { Http } from '@angular/http';
 import * as papa from 'papaparse';
@@ -20,7 +21,7 @@ export class MapPage {
   csvData: any[] = [];
   headerRow: any[] = [];
 
-  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private http: Http) {
+  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private http: Http, public modalCtrl: ModalController) {
     this.platform.ready().then(() => {
       this.loadCSV();
       this.loadMap();
@@ -88,6 +89,7 @@ export class MapPage {
   }
 
   getStampButtonOnClick() {
-    this.navCtrl.push(GetStampPage);
+    let myModal = this.modalCtrl.create(GetStampPage);
+    myModal.present();
   }
 }

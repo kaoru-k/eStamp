@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { GetStampPage } from '../get-stamp/get-stamp';
 
 @Component({
@@ -8,11 +9,12 @@ import { GetStampPage } from '../get-stamp/get-stamp';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
   }
 
   getStampButtonOnClick() {
-    this.navCtrl.push(GetStampPage)
+    let myModal = this.modalCtrl.create(GetStampPage);
+    myModal.present();
   }
 
 }
