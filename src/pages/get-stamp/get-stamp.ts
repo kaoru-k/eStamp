@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as papa from 'papaparse';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 /**
  * Generated class for the GetStampPage page.
@@ -27,7 +28,7 @@ export class GetStampPage {
   headerRow: any[] = [];
   cd = new CalcDistance;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http, public viewCtrl: ViewController) {
   }
 
   ionViewWillEnter() {
@@ -101,6 +102,10 @@ export class GetStampPage {
 
   getStampButtonOnClick() {
     this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 }
 
