@@ -5,6 +5,8 @@ import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic
 import { Http } from '@angular/http';
 import * as papa from 'papaparse';
 import { GetStampPage } from '../get-stamp/get-stamp';
+import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
+import { MapPopoverPage } from '../map-popover/map-popover';
 
 
 // declare var google;
@@ -21,7 +23,7 @@ export class MapPage {
   csvData: any[] = [];
   headerRow: any[] = [];
 
-  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private http: Http, public modalCtrl: ModalController) {
+  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private http: Http, public modalCtrl: ModalController, private popoverCtrl: PopoverController ) {
     this.platform.ready().then(() => {
       this.loadCSV();
       this.loadMap();
@@ -91,5 +93,14 @@ export class MapPage {
   getStampButtonOnClick() {
     let myModal = this.modalCtrl.create(GetStampPage);
     myModal.present();
+  }
+
+  showPopover(ev: UIEvent) {
+    let popover = this.popoverCtrl.create(MapPopoverPage, {
+
+    });
+    popover.present({
+      ev: ev
+    });
   }
 }
