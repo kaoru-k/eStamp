@@ -5,6 +5,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as papa from 'papaparse';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { Storage } from '@ionic/storage'
 
 /**
  * Generated class for the GetStampPage page.
@@ -22,16 +23,17 @@ export class GetStampPage {
   public target: string = "";
   public distance: string = "";
   public updataLocationButtonCaption: string = "更新中...";
-  public getStampButtonIsEnabled: boolean = false;
+  public getStampButtonIsEnabled: boolean = true;
 
   csvData: any[] = [];
   headerRow: any[] = [];
   cd = new CalcDistance;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http, public viewCtrl: ViewController, public storage: Storage ) {
   }
 
   ionViewWillEnter() {
+    
     this.loadCSV();
     this.updateDistance();
     this.updataLocationButtonCaption = "位置情報更新";
@@ -101,7 +103,10 @@ export class GetStampPage {
   }
 
   getStampButtonOnClick() {
-    this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+    // this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+    this.storage.get('spotList').then((items) => {
+      alert(items[0]['Name']);
+    });
   }
 
   dismiss() {
