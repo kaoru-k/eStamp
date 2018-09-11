@@ -21,25 +21,24 @@ export class MyApp {
 
   initializeApp() {
     this.storage.ready().then(() => {
-      this.storage.get('spotList').then((items) => {
-        if (!items) {this.loadCSV()};
+      if (!this.storage.get('spotList')) {
+        this.loadCSV();
+      }
+    }).then(() => {
+      this.platform.ready().then(() => {
+        // Okay, so the platform is ready and our plugins are available.
+        // Here you can do any higher level native things you might need.
+        this.rootPage = TabsPage;
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
       });
-    });
+    })
 
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.rootPage = TabsPage;
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
   }
 
   loadCSV() {
     console.log("loadCSV");
-    this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(
-      data => this.extractData(data),
-    );
+    this.extractData(this.http.get('/assets/data/kankoshisetsu_edit.csv'));
   }
 
   private extractData(res) {
