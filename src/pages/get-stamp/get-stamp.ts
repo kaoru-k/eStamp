@@ -26,18 +26,10 @@ export class GetStampPage {
   public sortData: any[] = [];
   
   distance: number = 0;
-  csvData: any[] = [];
+  csvData = [];
   cd = new CalcDistance;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
-  }
-  
-  ionViewWillEnter() {
-    this.loadDB();
-    // this.updateDistance();
-  }
-
-  loadDB() {
     this.storage.get('spotList').then((lists) => {
       this.csvData = lists;
       this.updateDistance();
