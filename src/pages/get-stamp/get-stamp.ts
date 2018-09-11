@@ -19,11 +19,13 @@ import { Storage } from '@ionic/storage'
 })
 export class GetStampPage {
   public target: string = "";
-  public distance: string = "";
-  public updataLocationButtonCaption: string = "更新中...";
-  public getStampButtonIsEnabled: boolean = true;
+  public distanceString: string = "";
+  public updateLocationButtonCaption: string = "更新中...";
+  public updateLocationButtonIsEnabled: boolean = false;
+  public getStampButtonIsEnabled: boolean = false;
   public sortData: any[] = [];
-
+  
+  distance: number = 0;
   csvData: any[] = [];
   cd = new CalcDistance;
 
@@ -33,7 +35,6 @@ export class GetStampPage {
   ionViewWillEnter() {
     this.loadDB();
     // this.updateDistance();
-    this.updataLocationButtonCaption = "位置情報更新";
   }
 
   loadDB() {
@@ -44,6 +45,8 @@ export class GetStampPage {
   }
 
   updateDistance() {
+    this.updateLocationButtonCaption = "更新中...";
+    this.updateLocationButtonIsEnabled = false;
     this.geolocation.getCurrentPosition().then((position) => {
       let latlng = {
         lat: position.coords.latitude,
@@ -52,29 +55,32 @@ export class GetStampPage {
       this.sortData = [];
       this.csvData.forEach(function(row){
         let distance = this.cd.getDistance({lat: row['Latitude'], lng: row['Longitude']}, latlng);
+        let distanceString = "";
         if (distance > 1000) {
-          distance = "約" + (distance / 1000).toFixed(1) + "km";
+          distanceString = "約" + (distance / 1000).toFixed(1) + "km";
         } else {
-          distance = "約" + Math.round(distance).toString() + "m";
+          distanceString = "約" + Math.round(distance).toString() + "m";
         };
         this.sortData.push({
           ID: row['ID'],
           Name: row['Name'],
-          Distance: distance
+          Distance: distance,
+          DistanceString: distanceString
         });
       },this);
       this.sortData.sort(function(a,b){return a['Distance'] - b ['Distance']});
       this.target = this.sortData[0]['Name'];
-      let distance = this.sortData[0]['Distance'] - 200;
-      if (distance > 1000) {
-        this.distance = "約" + (distance / 1000).toFixed(1) + "km";
-      } else if (distance <= 200) {
-        this.distance = "到着しました!"
+      this.distance = this.sortData[0]['Distance'] - 200;
+      if (this.distance > 1000) {
+        this.distanceString = "約" + (this.distance / 1000).toFixed(1) + "km";
+      } else if (this.distance <= 200) {
+        this.distanceString = "到着しました!"
         this.getStampButtonIsEnabled = true;
       } else {
-        this.distance = "約" + Math.round(distance).toString() + "m";
+        this.distanceString = "約" + Math.round(this.distance).toString() + "m";
       }
-
+      this.updateLocationButtonCaption = "位置情報更新";
+      this.updateLocationButtonIsEnabled = true;
     }).catch((error) => {
       let alert = this.alertCtrl.create({
         title: 'Error',
@@ -82,6 +88,8 @@ export class GetStampPage {
         buttons: ['Close']
       })
       alert.present();
+      this.updateLocationButtonCaption = "位置情報更新";
+      this.updateLocationButtonIsEnabled = true;
     });
   }
 
@@ -105,16 +113,14 @@ export class GetStampPage {
   }
 
   updateLocationButtonOnClick() {
-    this.updataLocationButtonCaption = "更新中...";
     this.updateDistance();
-    this.updataLocationButtonCaption = "位置情報更新";
   }
 
   getStampButtonOnClick() {
-    // this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
-    this.storage.get('spotList').then((items) => {
-      alert(items[0]['Name']);
-    });
+    this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+    if (this.distance <= 200) {
+      alert("Stamp Get!");
+    }
   }
 
   dismiss() {

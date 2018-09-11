@@ -25,14 +25,13 @@
       </ion-row>
       <ion-row>
         <ion-col>スタンプゲットまでの距離</ion-col>
-        <ion-col>{{distance}}</ion-col>
+        <ion-col>{{distanceString}}</ion-col>
       </ion-row>
     </ion-grid>
 
-    <button ion-button (click)="updateLocationButtonOnClick()">
-      <label>{{updataLocationButtonCaption}}</label>
+    <button ion-button [disabled]="!updateLocationButtonIsEnabled" (click)="updateLocationButtonOnClick()">
+      <label>{{updateLocationButtonCaption}}</label>
     </button>
-    自動更新:OFF
   </ion-card>
 
   <button ion-button block [disabled]="!getStampButtonIsEnabled" (click)="getStampButtonOnClick()">
@@ -60,7 +59,7 @@
 
   <ion-item *ngFor="let item of sortData">
     <ion-label>{{item.Name}}</ion-label>
-    <div item-content>{{item.Distance}}</div>
+    <div item-content>{{item.DistanceString}}</div>
   </ion-item>
   
 </ion-content>
