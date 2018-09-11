@@ -48,16 +48,19 @@
     <ion-list-header>
       並び替え
     </ion-list-header>
-    
     <ion-item>
       <ion-label>近い順</ion-label>
       <ion-radio checked="true" value="distance"></ion-radio>
     </ion-item>
-    
     <ion-item>
       <ion-label>スタンプ番号順</ion-label>
       <ion-radio value="stamp"></ion-radio>
     </ion-item>
   </ion-list>
+
+  <ion-item *ngFor="let item of sortData">
+    <ion-label>{{item.Name}}</ion-label>
+    <div item-content>{{item.Distance}}</div>
+  </ion-item>
   
 </ion-content>

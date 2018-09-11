@@ -22,9 +22,9 @@ export class GetStampPage {
   public distance: string = "";
   public updataLocationButtonCaption: string = "更新中...";
   public getStampButtonIsEnabled: boolean = true;
+  public sortData: any[] = [];
 
   csvData: any[] = [];
-  sortData: any[] = [];
   cd = new CalcDistance;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
@@ -49,9 +49,23 @@ export class GetStampPage {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }
-      this.sortData = this.csvData.sort(function(a){return (Math.pow(a['lat'] - latlng['lat'], 2) + Math.pow(a['lng'] - latlng['lng'], 2)) });
+      this.sortData = [];
+      this.csvData.forEach(function(row){
+        let distance = this.cd.getDistance({lat: row['Latitude'], lng: row['Longitude']}, latlng);
+        if (distance > 1000) {
+          distance = "約" + (distance / 1000).toFixed(1) + "km";
+        } else {
+          distance = "約" + Math.round(distance).toString() + "m";
+        };
+        this.sortData.push({
+          ID: row['ID'],
+          Name: row['Name'],
+          Distance: distance
+        });
+      },this);
+      this.sortData.sort(function(a,b){return a['Distance'] - b ['Distance']});
       this.target = this.sortData[0]['Name'];
-      let distance = this.cd.getDistance({lat: this.sortData[0]['Latitude'], lng: this.sortData[0]['Longitude']}, latlng) - 200;
+      let distance = this.sortData[0]['Distance'] - 200;
       if (distance > 1000) {
         this.distance = "約" + (distance / 1000).toFixed(1) + "km";
       } else if (distance <= 200) {
@@ -132,5 +146,17 @@ export class CalcDistance {
       lat: deg.lat * (Math.PI / 180),
       lng: deg.lng * (Math.PI / 180)
     };
+  }
+
+  compareLatLng(a, b, position) {
+    let ap = Math.pow(a.lat - position.lat, 2) + Math.pow(a.lng - position.lng, 2);
+    let bp = Math.pow(b.lat - position.lat, 2) + Math.pow(b.lng - position.lng, 2);
+    if (ap > bp) {
+      return 1;
+    } else if (bp > ap) {
+      return -1;
+    } else {
+      return 0;
+    }
   }
 }
