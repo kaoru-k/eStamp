@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
-import { Http } from '@angular/http';
-import * as papa from 'papaparse';
 import { GetStampPage } from '../get-stamp/get-stamp';
 import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
 import { MapPopoverPage } from '../map-popover/map-popover';
+import { Storage } from '@ionic/storage'
 
 
 // declare var google;
@@ -23,9 +22,9 @@ export class MapPage {
   csvData: any[] = [];
   headerRow: any[] = [];
 
-  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, private http: Http, public modalCtrl: ModalController, private popoverCtrl: PopoverController ) {
+  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, private popoverCtrl: PopoverController, public storage: Storage ) {
     this.platform.ready().then(() => {
-      this.loadCSV();
+      this.loadDB();
       this.loadMap();
     });
   }
@@ -34,20 +33,10 @@ export class MapPage {
   //   this.loadMapJS();
   // }
 
-  loadCSV() {
-    this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(
-      data => this.extractData(data),
-    );
-  }
-
-  private extractData(res) {
-    let csvData = res['_body'] || '';
-    let parsedData = papa.parse(csvData).data;
- 
-    this.headerRow = parsedData[0];
- 
-    parsedData.splice(0, 1);
-    this.csvData = parsedData;
+  loadDB() {
+    this.storage.get('spotList').then((lists) => {
+      this.csvData = lists;
+    });
   }
 
   // loadMapJS() {
@@ -80,11 +69,11 @@ export class MapPage {
   putMarkers() {
     this.csvData.forEach((row) =>{
       this.map.addMarkerSync({
-        title: row[1],
+        title: row['Name'],
         icon: 'blue',
         position: {
-          lat: row[3],
-          lng: row[4]
+          lat: row['Latitude'],
+          lng: row['Longitude']
         }
       });
     });

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
-import * as papa from 'papaparse';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Storage } from '@ionic/storage'
 
@@ -26,28 +24,23 @@ export class GetStampPage {
   public getStampButtonIsEnabled: boolean = true;
 
   csvData: any[] = [];
-  headerRow: any[] = [];
+  sortData: any[] = [];
   cd = new CalcDistance;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, private http: Http, public viewCtrl: ViewController, public storage: Storage ) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
   }
-
+  
   ionViewWillEnter() {
-    
-    this.loadCSV();
-    this.updateDistance();
+    this.loadDB();
+    // this.updateDistance();
     this.updataLocationButtonCaption = "位置情報更新";
   }
 
-  loadCSV() {
-    this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(
-      data => this.extractData(data),
-    );
-  }
-
-  private extractData(res) {
-    let csvData = res['_body'] || '';
-    this.csvData = papa.parse(csvData,{header:true}).data;
+  loadDB() {
+    this.storage.get('spotList').then((lists) => {
+      this.csvData = lists;
+      this.updateDistance();
+    });
   }
 
   updateDistance() {
@@ -56,8 +49,9 @@ export class GetStampPage {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }
-      this.target = this.csvData[0]['Name'];
-      let distance = this.cd.getDistance({lat: this.csvData[0]['Latitude'], lng: this.csvData[0]['Longitude']}, latlng) - 200;
+      this.sortData = this.csvData.sort(function(a){return (Math.pow(a['lat'] - latlng['lat'], 2) + Math.pow(a['lng'] - latlng['lng'], 2)) });
+      this.target = this.sortData[0]['Name'];
+      let distance = this.cd.getDistance({lat: this.sortData[0]['Latitude'], lng: this.sortData[0]['Longitude']}, latlng) - 200;
       if (distance > 1000) {
         this.distance = "約" + (distance / 1000).toFixed(1) + "km";
       } else if (distance <= 200) {
