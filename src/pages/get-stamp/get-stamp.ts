@@ -30,7 +30,7 @@ export class GetStampPage {
   sortDataDistance = [];
   csvData = [];
   cd = new CalcDistance;
-  stampArea = 999;
+  stampArea = 200;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
     this.storage.ready().then(() => {
