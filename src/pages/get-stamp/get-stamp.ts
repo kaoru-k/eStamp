@@ -23,8 +23,11 @@ export class GetStampPage {
   public updateLocationButtonCaption: string = "更新中...";
   public updateLocationButtonIsEnabled: boolean = false;
   public getStampButtonIsEnabled: boolean = false;
-  public sortData: any[] = [];
+  public viewList: any[] = [];
+  public radioButtonValue: string = "distance";
   
+  sortData = [];
+  sortDataDistance = [];
   distance: number = 0;
   csvData = [];
   cd = new CalcDistance;
@@ -60,9 +63,9 @@ export class GetStampPage {
           DistanceString: distanceString
         });
       },this);
-      this.sortData.sort(function(a,b){return a['Distance'] - b ['Distance']});
-      this.target = this.sortData[0]['Name'];
-      this.distance = this.sortData[0]['Distance'] - 200;
+      this.sortDataDistance = this.sortData.slice().sort(function(a,b){return a['Distance'] - b ['Distance']});
+      this.target = this.sortDataDistance[0]['Name'];
+      this.distance = this.sortDataDistance[0]['Distance'] - 200;
       if (this.distance > 1000) {
         this.distanceString = "約" + (this.distance / 1000).toFixed(1) + "km";
       } else if (this.distance <= 200) {
@@ -71,6 +74,7 @@ export class GetStampPage {
       } else {
         this.distanceString = "約" + Math.round(this.distance).toString() + "m";
       }
+      this.updateList();
       this.updateLocationButtonCaption = "位置情報更新";
       this.updateLocationButtonIsEnabled = true;
     }).catch((error) => {
@@ -112,6 +116,14 @@ export class GetStampPage {
     this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
     if (this.distance <= 200) {
       alert("Stamp Get!");
+    }
+  }
+
+  updateList() {
+    if (this.radioButtonValue == "stamp") {
+      this.viewList = this.sortData;
+    } else {
+      this.viewList = this.sortDataDistance;
     }
   }
 
