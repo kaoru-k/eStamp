@@ -35,11 +35,18 @@ export class MyApp {
   }
 
   async loadCSV() {
+    // this.storage.clear();
     this.storage.get('spotList').then((items) => {
       if (!items) {
+        console.log("loadCSV()");
         this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(res => {
-          let csvData = res['_body'] || '';
-          this.storage.set('spotList', papa.parse(csvData,{header:true}).data);
+          let csvData = [];
+          papa.parse(res['_body'] || '',{header: true}).data.forEach(function(row) {
+            row.Get = false;
+            row.GetDate = "";
+            csvData.push(row);
+          }, this);
+          this.storage.set('spotList', csvData);
         });
       }
     });

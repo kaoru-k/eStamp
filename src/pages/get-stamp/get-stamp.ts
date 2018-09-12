@@ -18,7 +18,7 @@ import { Storage } from '@ionic/storage'
   templateUrl: 'get-stamp.html',
 })
 export class GetStampPage {
-  public target: string = "";
+  public target: any[] = [];
   public distanceString: string = "";
   public updateLocationButtonCaption: string = "更新中...";
   public updateLocationButtonIsEnabled: boolean = false;
@@ -28,9 +28,9 @@ export class GetStampPage {
   
   sortData = [];
   sortDataDistance = [];
-  distance: number = 0;
   csvData = [];
   cd = new CalcDistance;
+  stampArea = 999;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
     this.storage.ready().then(() => {
@@ -53,7 +53,9 @@ export class GetStampPage {
       this.csvData.forEach(function(row){
         let distance = this.cd.getDistance({lat: row['Latitude'], lng: row['Longitude']}, latlng);
         let distanceString = "";
-        if (distance > 1000) {
+        if (row['Get']) {
+          distanceString = "ゲット済";
+        } else if (distance > 1000) {
           distanceString = "約" + (distance / 1000).toFixed(1) + "km";
         } else {
           distanceString = "約" + Math.round(distance).toString() + "m";
@@ -62,19 +64,27 @@ export class GetStampPage {
           ID: row['ID'],
           Name: row['Name'],
           Distance: distance,
-          DistanceString: distanceString
+          DistanceString: distanceString,
+          Get: row['Get'],
         });
       },this);
+      this.sortData.sort(function(a,b){return a['ID'] - b['ID']});
       this.sortDataDistance = this.sortData.slice().sort(function(a,b){return a['Distance'] - b ['Distance']});
-      this.target = this.sortDataDistance[0]['Name'];
-      this.distance = this.sortDataDistance[0]['Distance'] - 200;
-      if (this.distance > 1000) {
-        this.distanceString = "約" + (this.distance / 1000).toFixed(1) + "km";
-      } else if (this.distance <= 200) {
+      var i = 0;
+      this.target = null;
+      while (!this.target) {
+        if (this.sortDataDistance[i]['Get'] != true ) {
+          this.target = this.sortDataDistance[i];
+        }
+        i++;
+      }
+      if (this.target['Distance'] - this.stampArea > 1000) {
+        this.distanceString = "約" + ((this.target['Distance'] - this.stampArea) / 1000).toFixed(1) + "km";
+      } else if (this.target['Distance'] <= this.stampArea) {
         this.distanceString = "到着しました!"
         this.getStampButtonIsEnabled = true;
       } else {
-        this.distanceString = "約" + Math.round(this.distance).toString() + "m";
+        this.distanceString = "約" + Math.round(this.target['Distance'] - this.stampArea).toString() + "m";
       }
       this.updateList();
       this.updateLocationButtonCaption = "位置情報更新";
@@ -82,13 +92,31 @@ export class GetStampPage {
     }).catch((error) => {
       let alert = this.alertCtrl.create({
         title: 'Error',
-        subTitle: 'Error getting location' + error,
+        subTitle: error,
         buttons: ['Close']
       })
       alert.present();
       this.updateLocationButtonCaption = "位置情報更新";
       this.updateLocationButtonIsEnabled = true;
     });
+  }
+
+  async updateDB(id) {
+    var dt = new Date();
+    let newData = [];
+
+    this.csvData.forEach(function(row) {
+      if (row.ID != id) {
+        newData.push(row);
+      } else {
+        row.Get = true;
+        row.GetDate = [dt.getFullYear(), dt.getMonth(), dt.getDate()].join('/');
+        newData.push(row);
+      };
+    }, this);
+
+    this.csvData = newData;
+    this.storage.set('spotList', this.csvData);
   }
 
   qrButtonOnClick() {
@@ -116,9 +144,16 @@ export class GetStampPage {
 
   getStampButtonOnClick() {
     this.getStampButtonIsEnabled = false;
-    if (this.distance <= 200) {
-      alert("Stamp Get!");
-      
+    if (this.target['Distance'] <= this.stampArea && this.target['Get'] == false) {
+      this.updateDB(this.target['ID']).then(() => {
+        let alert = this.alertCtrl.create({
+          title: 'スタンプゲット',
+          subTitle: this.target['Name'] + "のスタンプをゲットしました！",
+          buttons: ['閉じる']
+        });
+        alert.present();
+        this.updateDistance();
+      });
     }
   }
 

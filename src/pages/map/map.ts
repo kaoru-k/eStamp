@@ -29,6 +29,10 @@ export class MapPage {
     this.loadMap();
     // this.loadMapJS();
   }
+
+  ionViewDidEnter(){
+    this.putMarkers();
+  }
   
     // loadMapJS() {
     //   this.map = new google.maps.Map(this.mapElement.nativeElement, {
@@ -61,8 +65,8 @@ export class MapPage {
     this.storage.get('spotList').then((csvData) => {
       csvData.forEach((row) =>{
         let color = "red";
-        if (row['Get'] == "True") color = "blue";
-        if ((this.visited == true && row['Get'] == "True") || (this.nonVisited == true && row['Get'] != "True")) {
+        if (row['Get'] == true) color = "blue";
+        if ((this.visited == true && row['Get'] == true) || (this.nonVisited == true && row['Get'] != true)) {
           this.map.addMarkerSync({
             title: row['Name'],
             icon: color,
@@ -79,6 +83,9 @@ export class MapPage {
   getStampButtonOnClick() {
     let myModal = this.modalCtrl.create(GetStampPage);
     myModal.present();
+    myModal.onDidDismiss(data => {
+      this.putMarkers();
+    });
   }
 
   showPopover(ev: UIEvent) {
