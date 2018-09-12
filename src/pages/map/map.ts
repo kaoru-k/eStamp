@@ -6,6 +6,7 @@ import { GetStampPage } from '../get-stamp/get-stamp';
 import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
 import { MapPopoverPage } from '../map-popover/map-popover';
 import { Storage } from '@ionic/storage'
+import { StampBookPage } from '../stamp-book/stamp-book';
 
 
 // declare var google;
@@ -15,36 +16,26 @@ import { Storage } from '@ionic/storage'
   templateUrl: 'map.html',
 })
 export class MapPage {
-
+  visited: boolean = true;
+  nonVisited: boolean = true;
+  map: GoogleMap;
   // @ViewChild('map') mapElement: ElementRef;
   // map: any; // loadMapJS
-  map: GoogleMap;
-  csvData: any[] = [];
-  headerRow: any[] = [];
 
   constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, private popoverCtrl: PopoverController, public storage: Storage ) {
-    this.platform.ready().then(() => {
-      this.loadDB();
-      this.loadMap();
-    });
   }
-
-  // ionViewDidLoad(){
-  //   this.loadMapJS();
-  // }
-
-  loadDB() {
-    this.storage.get('spotList').then((lists) => {
-      this.csvData = lists;
-    });
+  
+  ionViewDidLoad(){
+    this.loadMap();
+    // this.loadMapJS();
   }
-
-  // loadMapJS() {
-  //   this.map = new google.maps.Map(this.mapElement.nativeElement, {
-  //     center: {lat: 34.075, lng: 134.515},
-  //     zoom: 8
-  //   });
-  // }
+  
+    // loadMapJS() {
+    //   this.map = new google.maps.Map(this.mapElement.nativeElement, {
+    //     center: {lat: 34.075, lng: 134.515},
+    //     zoom: 8
+    //   });
+    // }
 
   loadMap() {
     let options: GoogleMapOptions = {
@@ -67,14 +58,20 @@ export class MapPage {
   }
   
   putMarkers() {
-    this.csvData.forEach((row) =>{
-      this.map.addMarkerSync({
-        title: row['Name'],
-        icon: 'blue',
-        position: {
-          lat: row['Latitude'],
-          lng: row['Longitude']
-        }
+    this.storage.get('spotList').then((csvData) => {
+      csvData.forEach((row) =>{
+        let color = "red";
+        if (row['Get'] == "True") color = "blue";
+        if ((this.visited == true && row['Get'] == "True") || (this.nonVisited == true && row['Get'] != "True")) {
+          this.map.addMarkerSync({
+            title: row['Name'],
+            icon: color,
+            position: {
+              lat: row['Latitude'],
+              lng: row['Longitude']
+            }
+          });
+        };
       });
     });
   }
@@ -86,10 +83,21 @@ export class MapPage {
 
   showPopover(ev: UIEvent) {
     let popover = this.popoverCtrl.create(MapPopoverPage, {
-
+      visited: this.visited,
+      nonVisited: this.nonVisited
     });
     popover.present({
       ev: ev
     });
+    popover.onDidDismiss(data => {
+      if (data) {
+        console.log(data);
+        this.visited = data.visited;
+        this.nonVisited = data.nonVisited;
+        this.map.clear().then(() => {
+          this.putMarkers();
+        });
+      }
+    })
   }
 }
