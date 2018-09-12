@@ -33,9 +33,11 @@ export class GetStampPage {
   cd = new CalcDistance;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
-    this.storage.get('spotList').then((lists) => {
-      this.csvData = lists;
-      this.updateDistance();
+    this.storage.ready().then(() => {
+      this.storage.get('spotList').then((lists) => {
+        this.csvData = lists;
+        this.updateDistance();
+      });
     });
   }
 
@@ -113,9 +115,10 @@ export class GetStampPage {
   }
 
   getStampButtonOnClick() {
-    this.getStampButtonIsEnabled = !this.getStampButtonIsEnabled;
+    this.getStampButtonIsEnabled = false;
     if (this.distance <= 200) {
       alert("Stamp Get!");
+      
     }
   }
 
