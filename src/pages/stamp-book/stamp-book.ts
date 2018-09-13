@@ -15,19 +15,32 @@ export class StampBookPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public storage: Storage) {
   }
+  
+  ionViewDidEnter() {
+    this.updateList();
+  }
 
-  ionViewDidLoad() {
+  updateList() {
     this.storage.get('spotList').then((csvData) => {
       this.stampCount = 0;
       csvData.forEach((row) =>{
-        if (row['Get'] == true) {this.stampCount++}
-        this.stampList.push({
-          ID: "No." + ("000" + row['ID']).slice(-3),
-          Name: row['Name'],
-          Get: true,
-          GetDate: row['GetDate'],
-          img: "assets/imgs/stamp/stamp_sample.png"
-        });
+        if (row['Get'] == true) {
+          this.stampCount++
+          this.stampList.push({
+            ID: "No." + ("000" + row['ID']).slice(-3),
+            Name: row['Name'],
+            Get: row['Get'],
+            GetDate: row['GetDate'],
+            img: "assets/imgs/stamp/stamp_sample.png"
+          });
+        } else {
+          this.stampList.push({
+            ID: "No." + ("000" + row['ID']).slice(-3),
+            Name: row['Name'],
+            Get: row['Get'],
+            img: "assets/imgs/stamp/stamp_sample_nostamp.png"
+          });
+        };
       });
     });
   }
@@ -42,6 +55,9 @@ export class StampBookPage {
   getStampButtonOnClick() {
     let myModal = this.modalCtrl.create(GetStampPage, {});
     myModal.present();
+    myModal.onDidDismiss(data => {
+      this.updateList();
+    });
   }
   
 }
