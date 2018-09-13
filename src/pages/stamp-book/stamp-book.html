@@ -31,8 +31,17 @@
         <ion-col>0個</ion-col>
       </ion-row>
     </ion-grid>
-    
   </ion-card>
+  <ion-list radio-group>
+    <ion-item>
+      <ion-label>全て表示</ion-label>
+      <ion-radio checked="true" value="all" (ionChange)="updateList()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>ゲット済のみ表示</ion-label>
+      <ion-radio value="get" (ionSelect)="updateList()"></ion-radio>
+    </ion-item>
+  </ion-list>
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let item of stampList" col-6>
