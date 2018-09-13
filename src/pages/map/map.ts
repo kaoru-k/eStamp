@@ -6,8 +6,6 @@ import { GetStampPage } from '../get-stamp/get-stamp';
 import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
 import { MapPopoverPage } from '../map-popover/map-popover';
 import { Storage } from '@ionic/storage'
-import { StampBookPage } from '../stamp-book/stamp-book';
-
 
 // declare var google;
 
@@ -22,7 +20,7 @@ export class MapPage {
   // @ViewChild('map') mapElement: ElementRef;
   // map: any; // loadMapJS
 
-  constructor(private platform: Platform, public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, private popoverCtrl: PopoverController, public storage: Storage ) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, private popoverCtrl: PopoverController, public storage: Storage ) {
   }
   
   ionViewDidLoad(){
