@@ -23,50 +23,22 @@
   <ion-card>
     <ion-grid>
       <ion-row>
-        <ion-col>
-          通常スタンプ
-        </ion-col>
-        <ion-col>
-          n個
-        </ion-col>
+        <ion-col>通常スタンプ</ion-col>
+        <ion-col>{{stampCount}}個</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
-          ボーナススタンプ
-        </ion-col>
-        <ion-col>
-          n個
-        </ion-col>
+        <ion-col>ボーナススタンプ</ion-col>
+        <ion-col>0個</ion-col>
       </ion-row>
     </ion-grid>
     
   </ion-card>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-card (click)="stampOnClick()">
-          <img src="assets/imgs/stamp/stamp_sample.png" />
-          No.000<br />徳島大学
-        </ion-card>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <img src="assets/imgs/stamp/stamp_sample.png" />
-          No.000<br />徳島大学
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <img src="assets/imgs/stamp/stamp_sample.png" />
-          No.000<br />徳島大学
-        </ion-card>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <img src="assets/imgs/stamp/stamp_sample.png" />
-          No.000<br />徳島大学
+      <ion-col *ngFor="let item of stampList" col-6>
+        <ion-card (click)="stampOnClick(item.ID,item.Name,item.Get,item.GetDate)">
+          <img [(src)]="item.img" />
+          {{item.ID}}<br />{{item.Name}}
         </ion-card>
       </ion-col>
     </ion-row>
