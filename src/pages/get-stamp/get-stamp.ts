@@ -110,7 +110,7 @@ export class GetStampPage {
         newData.push(row);
       } else {
         row.Get = true;
-        row.GetDate = [dt.getFullYear(), dt.getMonth(), dt.getDate()].join('/');
+        row.GetDate = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('/') + " " + dt.getHours() + ":" + dt.getMinutes();
         newData.push(row);
       };
     }, this);
@@ -157,7 +157,7 @@ export class GetStampPage {
     }
   }
 
-  updateList() {
+  async updateList() {
     if (this.radioButtonValue == "stamp") {
       this.viewList = this.sortData;
     } else {
