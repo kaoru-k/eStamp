@@ -35,10 +35,37 @@
   </ion-card>
   <ion-grid>
     <ion-row>
+<<<<<<< HEAD
       <ion-col *ngFor="let item of stampList" col-6>
         <ion-card (click)="stampOnClick(item.ID,item.Name,item.Get,item.GetDate)">
           <img [(src)]="item.img" />
           {{item.ID}}<br />{{item.Name}}
+=======
+      <ion-col col-4>
+        <ion-card (click)="stampOnClick()">
+          <img src="assets/imgs/stamp/stamp_sample.png" />
+          No.000<br />徳島大学
+        </ion-card>
+      </ion-col>
+      <ion-col col-4>
+        <ion-card>
+          <img src="assets/imgs/stamp/stamp_sample.png" />
+          No.000<br />徳島大学
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <ion-card>
+          <img src="assets/imgs/stamp/stamp_sample.png" />
+          No.000<br />徳島大学
+        </ion-card>
+      </ion-col>
+      <ion-col col-4>
+        <ion-card>
+          <img src="assets/imgs/stamp/stamp_sample.png" />
+          No.000<br />徳島大学
+>>>>>>> 0b96a051c948506dae385ca4c051e3ba3a49ccbf
         </ion-card>
       </ion-col>
     </ion-row>
