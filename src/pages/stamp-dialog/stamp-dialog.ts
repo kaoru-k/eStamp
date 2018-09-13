@@ -14,11 +14,19 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
   templateUrl: 'stamp-dialog.html',
 })
 export class StampDialogPage {
-  public stampNo: string = "No.000";
-  public stampLocation: string = "徳島大学";
-  public stampGetDate: string = "2018/9/1";
+  public stampNo: string;
+  public stampLocation: string;
+  public stampGetDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  }
+
+  ngOnInit() {
+    if (this.navParams.data) {
+      this.stampNo = this.navParams.data.id;
+      this.stampLocation = this.navParams.data.name;
+      this.stampGetDate = this.navParams.data.date;
+    }
   }
 
   dismiss() {
