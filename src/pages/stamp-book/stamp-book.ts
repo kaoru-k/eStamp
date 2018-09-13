@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage'
 export class StampBookPage {
   public stampList: any[] = [];
   public stampCount: number;
+  public radioButtonValue: string = "all";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public storage: Storage) {
   }
@@ -22,6 +23,7 @@ export class StampBookPage {
 
   updateList() {
     this.storage.get('spotList').then((csvData) => {
+      this.stampList = [];
       this.stampCount = 0;
       csvData.forEach((row) =>{
         if (row['Get'] == true) {
@@ -33,7 +35,7 @@ export class StampBookPage {
             GetDate: row['GetDate'],
             img: "assets/imgs/stamp/stamp_sample.png"
           });
-        } else {
+        } else if (this.radioButtonValue == "all" ) {
           this.stampList.push({
             ID: "No." + ("000" + row['ID']).slice(-3),
             Name: row['Name'],

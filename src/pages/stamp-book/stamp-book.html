@@ -32,10 +32,10 @@
       </ion-row>
     </ion-grid>
   </ion-card>
-  <ion-list radio-group>
+  <ion-list radio-group [(ngModel)]="radioButtonValue">
     <ion-item>
       <ion-label>全て表示</ion-label>
-      <ion-radio checked="true" value="all" (ionChange)="updateList()"></ion-radio>
+      <ion-radio value="all" (ionSelect)="updateList()"></ion-radio>
     </ion-item>
     <ion-item>
       <ion-label>ゲット済のみ表示</ion-label>
