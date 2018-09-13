@@ -84,7 +84,9 @@ export class MapPage {
     let myModal = this.modalCtrl.create(GetStampPage);
     myModal.present();
     myModal.onDidDismiss(data => {
-      this.putMarkers();
+      this.map.clear().then(() => {
+        this.putMarkers();
+      });
     });
   }
 
