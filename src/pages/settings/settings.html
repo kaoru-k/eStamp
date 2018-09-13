@@ -15,13 +15,14 @@
 
 <ion-content>
   <ion-fab right bottom>
-      <button ion-fab color="primary" (click)="getStampButtonOnClick()">
-        <ion-icon name="pin"></ion-icon>
-      </button>
-    </ion-fab>
-  <ion-list-header>
-    基本設定
-  </ion-list-header>
+    <button ion-fab color="primary" (click)="getStampButtonOnClick()">
+      <ion-icon name="pin"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-list>  
+    <ion-list-header>
+      基本設定
+    </ion-list-header>
     <ion-item>
       <ion-label>設定1</ion-label>
       <ion-toggle [(ngModel)] = "setting1"></ion-toggle>
@@ -34,23 +35,20 @@
       <ion-label>設定3</ion-label>
       <ion-toggle [(ngModel)] = "setting3"></ion-toggle>
     </ion-item>
-  <ion-list-header>
-    応用設定
-  </ion-list-header>
-  <ion-list radio-group>
-    <ion-item>
-      <ion-label>設定1</ion-label>
-      <ion-radio value = "setting1a" checked></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>設定2</ion-label>
-      <ion-radio value = "setting2a"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>設定3</ion-label>
-      <ion-radio value = "setting3a"></ion-radio>
-    </ion-item>
   </ion-list>
+  <ion-list>
+    <ion-list-header>
+      応用設定
+    </ion-list-header>
+    <ion-item-group>
+      <ion-item>
+        <button ion-item (click)="deleteSettings()">
+          アプリを初期化する（要：再起動）
+        </button>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+  
 
   <div padding>
     <h3>著作権表示</h3>
