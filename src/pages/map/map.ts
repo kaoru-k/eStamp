@@ -62,18 +62,26 @@ export class MapPage {
   putMarkers() {
     this.storage.get('spotList').then((csvData) => {
       csvData.forEach((row) =>{
-        let color = "red";
-        if (row['Get'] == true) color = "blue";
-        if ((this.visited == true && row['Get'] == true) || (this.nonVisited == true && row['Get'] != true)) {
+        if (this.visited == true && row['Get'] == true) {
+          this.map.addMarkerSync({
+            title: row['Name'] + "\n入手日時：" + row['GetDate'],
+            icon: "red",
+            position: {
+              lat: row['Latitude'],
+              lng: row['Longitude']
+            }
+          });
+        } else if (this.nonVisited == true && row['Get'] != true) {
           this.map.addMarkerSync({
             title: row['Name'],
-            icon: color,
+            icon: "blue",
             position: {
               lat: row['Latitude'],
               lng: row['Longitude']
             }
           });
         };
+
       });
     });
   }
