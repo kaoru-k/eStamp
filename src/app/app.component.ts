@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage'
+import { Device } from '@ionic-native/device'
 import * as papa from 'papaparse';
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -15,7 +16,7 @@ export class MyApp {
   // rootPage:any = TabsPage;
   rootPage: any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage, private device: Device) {
     this.initializeApp();
   }
 
@@ -36,6 +37,7 @@ export class MyApp {
 
   async loadCSV() {
     // this.storage.clear();
+    this.storage.set('ID', this.device.uuid);
     this.storage.get('spotList').then((items) => {
       if (!items) {
         console.log("loadCSV()");
