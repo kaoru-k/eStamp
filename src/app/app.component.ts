@@ -16,7 +16,7 @@ export class MyApp {
   // rootPage:any = TabsPage;
   rootPage: any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage, private device: Device) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage) {
     this.initializeApp();
   }
 
@@ -37,10 +37,11 @@ export class MyApp {
 
   async loadCSV() {
     // this.storage.clear();
-    this.storage.set('ID', this.device.uuid);
     this.storage.get('spotList').then((items) => {
       if (!items) {
         console.log("loadCSV()");
+        // this.storage.set('ID', this.device.uuid);
+        this.storage.set('stampCount', 0);
         this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(res => {
           let csvData = [];
           papa.parse(res['_body'] || '',{header: true}).data.forEach(function(row) {
