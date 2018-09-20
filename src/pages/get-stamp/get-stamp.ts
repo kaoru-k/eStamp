@@ -4,6 +4,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Storage } from '@ionic/storage'
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { StampConfirmPage } from '../stamp-confirm/stamp-confirm';
 
 /**
  * Generated class for the GetStampPage page.
@@ -32,7 +34,7 @@ export class GetStampPage {
   cd = new CalcDistance;
   stampArea = 200;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage ) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage, public modalCtrl: ModalController ) {
     this.storage.ready().then(() => {
       this.storage.get('spotList').then((lists) => {
         this.csvData = lists;
@@ -119,6 +121,14 @@ export class GetStampPage {
     this.storage.set('spotList', this.csvData);
   }
 
+  updateStampCount() {
+    let stampCount;
+    this.storage.get('stampCount').then((value) =>{
+      stampCount = value;
+      this.storage.set('stampCount', stampCount + 1);
+    })
+  }
+
   qrButtonOnClick() {
     this.barcodeScanner.scan().then(barcodeData => {
       console.log('Barcode data', barcodeData);
@@ -151,8 +161,11 @@ export class GetStampPage {
           subTitle: this.target['Name'] + "のスタンプをゲットしました！",
           buttons: ['閉じる']
         });
-        alert.present();
-        this.updateDistance();
+        let myModal = this.modalCtrl.create(StampConfirmPage, {});
+        myModal.present();
+        myModal.onDidDismiss(data => {
+          this.updateDistance();
+        });
       });
     }
   }
