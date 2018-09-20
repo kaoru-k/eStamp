@@ -18,6 +18,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MapPopoverPage } from '../pages/map-popover/map-popover';
+import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MapPopoverPage } from '../pages/map-popover/map-popover';
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage
+    StampDialogPage,
+    StampConfirmPage
   ],
   providers: [
     StatusBar,
