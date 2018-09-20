@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Http } from '@angular/http';
 import { NavController, NavParams } from 'ionic-angular';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { GetStampPage } from '../get-stamp/get-stamp';
@@ -13,11 +14,13 @@ export class StampBookPage {
   public stampList: any[] = [];
   public stampCount: number;
   public radioButtonValue: string = "all";
+  public ranking: number = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public http: Http, public storage: Storage) {
   }
   
   ionViewDidEnter() {
+    this.updateRanking();
     this.updateList();
   }
 
@@ -45,6 +48,12 @@ export class StampBookPage {
         };
       });
     });
+  };
+
+  updateRanking() {
+    this.http.post('https://<server_url>/dev/ranking', '{stampCount:2}').subscribe(res => {
+      this.ranking = res['_body']['ranking'];
+    });
   }
 
   stampOnClick(id, name, get, date) {
@@ -58,6 +67,7 @@ export class StampBookPage {
     let myModal = this.modalCtrl.create(GetStampPage, {});
     myModal.present();
     myModal.onDidDismiss(data => {
+      this.updateRanking();
       this.updateList();
     });
   }
