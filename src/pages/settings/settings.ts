@@ -14,7 +14,7 @@ export class SettingsPage {
   }
 
   deleteSettings() {
-    this.storage.clear();
+    this.storage.remove('ID');
   }
 
   getStampButtonOnClick() {

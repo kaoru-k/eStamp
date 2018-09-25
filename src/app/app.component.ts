@@ -16,7 +16,7 @@ export class MyApp {
   // rootPage:any = TabsPage;
   rootPage: any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public http: Http, public storage: Storage, private device: Device) {
     this.initializeApp();
   }
 
@@ -37,20 +37,22 @@ export class MyApp {
 
   async loadCSV() {
     // this.storage.clear();
-    this.storage.get('spotList').then((items) => {
+    this.storage.get('ID').then((items) => {
       if (!items) {
         console.log("loadCSV()");
-        // this.storage.set('ID', this.device.uuid);
-        this.storage.set('stampCount', 0);
-        this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(res => {
-          let csvData = [];
-          papa.parse(res['_body'] || '',{header: true}).data.forEach(function(row) {
-            row.Get = false;
-            row.GetDate = "";
-            csvData.push(row);
-          }, this);
-          this.storage.set('spotList', csvData);
-        });
+        this.storage.clear().then(() => {
+          this.storage.set('ID', this.device.uuid);
+          this.storage.set('stampCount', 0);
+          this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(res => {
+            let csvData = [];
+            papa.parse(res['_body'] || '',{header: true}).data.forEach(function(row) {
+              row.Get = false;
+              row.GetDate = "";
+              csvData.push(row);
+            }, this);
+            this.storage.set('spotList', csvData);
+          });
+        })
       }
     });
   }
