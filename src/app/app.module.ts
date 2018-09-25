@@ -5,11 +5,13 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { MapPage } from '../pages/map/map';
+import { MapPopoverPage } from '../pages/map-popover/map-popover';
 import { StampBookPage } from '../pages/stamp-book/stamp-book';
 import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 import { GetStampPage } from '../pages/get-stamp/get-stamp';
 import { StampDialogPage } from '../pages/stamp-dialog/stamp-dialog';
+import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -17,8 +19,7 @@ import { GoogleMaps } from "@ionic-native/google-maps";
 import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { MapPopoverPage } from '../pages/map-popover/map-popover';
-import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
+import { Device } from '@ionic-native/device'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage
+    StampDialogPage,
+    StampConfirmPage
   ],
   imports: [
     BrowserModule,
@@ -55,6 +57,7 @@ import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
     Geolocation,
     BarcodeScanner,
     GoogleMaps,
+    Device,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
