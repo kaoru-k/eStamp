@@ -11,7 +11,6 @@ import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 import { GetStampPage } from '../pages/get-stamp/get-stamp';
 import { StampDialogPage } from '../pages/stamp-dialog/stamp-dialog';
-import { StampConfirmPage } from '../pages/stamp-confirm/stamp-confirm';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -20,6 +19,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Device } from '@ionic-native/device'
+import { SocialSharing } from '@ionic-native/social-sharing'
 
 @NgModule({
   declarations: [
@@ -30,8 +30,7 @@ import { Device } from '@ionic-native/device'
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage,
-    StampConfirmPage
+    StampDialogPage
   ],
   imports: [
     BrowserModule,
@@ -58,6 +57,7 @@ import { Device } from '@ionic-native/device'
     BarcodeScanner,
     GoogleMaps,
     Device,
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
