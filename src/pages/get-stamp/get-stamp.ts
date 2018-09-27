@@ -5,7 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Storage } from '@ionic/storage'
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
-import { StampConfirmPage } from '../stamp-confirm/stamp-confirm';
+import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
 
 /**
  * Generated class for the GetStampPage page.
@@ -112,19 +112,19 @@ export class GetStampPage {
         newData.push(row);
       } else {
         row.Get = true;
-        row.GetDate = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('/') + " " + dt.getHours() + ":" + dt.getMinutes();
+        row.GetDate = [dt.getFullYear(), ("0" + (dt.getMonth() + 1)).slice(-2), ("0" + dt.getDate()).slice(-2)].join('/') + " " + ("0" + dt.getHours()).slice(-2) + ":" + ("0" + dt.getMinutes()).slice(-2);
         newData.push(row);
       };
     }, this);
 
     this.csvData = newData;
     this.storage.set('spotList', this.csvData);
+    this.updateStampCount();
   }
 
   updateStampCount() {
-    let stampCount;
     this.storage.get('stampCount').then((value) =>{
-      stampCount = value;
+      let stampCount = value;
       this.storage.set('stampCount', stampCount + 1);
     })
   }
@@ -156,12 +156,12 @@ export class GetStampPage {
     this.getStampButtonIsEnabled = false;
     if (this.target['Distance'] <= this.stampArea && this.target['Get'] == false) {
       this.updateDB(this.target['ID']).then(() => {
-        let alert = this.alertCtrl.create({
-          title: 'スタンプゲット',
-          subTitle: this.target['Name'] + "のスタンプをゲットしました！",
-          buttons: ['閉じる']
-        });
-        let myModal = this.modalCtrl.create(StampConfirmPage, {});
+        // let alert = this.alertCtrl.create({
+        //   title: 'スタンプゲット',
+        //   subTitle: this.target['Name'] + "のスタンプをゲットしました！",
+        //   buttons: ['閉じる']
+        // });
+        let myModal = this.modalCtrl.create(StampDialogPage, {});
         myModal.present();
         myModal.onDidDismiss(data => {
           this.updateDistance();
