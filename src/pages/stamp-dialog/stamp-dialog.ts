@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { File } from '@ionic-native/file';
-import { cordovaWarn } from '@ionic-native/core';
 
 /**
  * Generated class for the StampDialogPage page.

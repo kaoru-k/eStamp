@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { NavController, NavParams } from 'ionic-angular';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { Storage } from '@ionic/storage'
+
 import { GetStampPage } from '../get-stamp/get-stamp';
 import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
-import { Storage } from '@ionic/storage'
 
 @Component({
   selector: 'page-stamp-book',

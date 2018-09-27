@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular/navigation/nav-params';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the MapPopoverPage page.

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
-import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
-import { GetStampPage } from '../get-stamp/get-stamp';
-import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
-import { MapPopoverPage } from '../map-popover/map-popover';
+import { NavController, AlertController, ModalController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
+import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent } from '@ionic-native/google-maps';
+
+import { GetStampPage } from '../get-stamp/get-stamp';
+import { MapPopoverPage } from '../map-popover/map-popover';
 
 // declare var google;
 

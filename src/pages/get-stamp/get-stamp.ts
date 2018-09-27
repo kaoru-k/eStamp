@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ViewController, ModalController } from 'ionic-angular';
+import { Storage } from '@ionic/storage'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { Storage } from '@ionic/storage'
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+
 import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
 
 /**
