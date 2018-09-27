@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { File } from '@ionic-native/file';
+import { cordovaWarn } from '@ionic-native/core';
 
 /**
  * Generated class for the StampDialogPage page.
@@ -17,8 +21,9 @@ export class StampDialogPage {
   public stampNo: string;
   public stampLocation: string;
   public stampGetDate: string;
+  public likeCount: number = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private socialSharing: SocialSharing, private alertCtrl: AlertController, private file: File) {
   }
 
   ngOnInit() {
@@ -27,6 +32,44 @@ export class StampDialogPage {
       this.stampLocation = this.navParams.data.name;
       this.stampGetDate = this.navParams.data.date;
     }
+  }
+
+  questionButtonOnClick() {
+    let alert = this.alertCtrl.create({
+      title: 'アンケート',
+      message: '施設内、もしくは近くにトイレはありますか',
+      buttons: [
+        {
+          text: 'はい',
+          handler: () => {
+            console.log('はい clicked');
+          }
+        },
+        {
+          text: 'いいえ',
+          handler: () => {
+            console.log('いいえ clicked');
+          }
+        },
+        {
+          text: 'わからない',
+          handler: () => {
+            console.log('わからない clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  shareButtonOnClick() {
+    
+    this.socialSharing.share(
+    "とくしまeスタンプラリーで「"+ this.stampLocation + "」のスタンプをゲット！" ,
+    null,
+    null,
+    "https://estamp-tokushima.appspot.com"
+    )
   }
 
   dismiss() {
