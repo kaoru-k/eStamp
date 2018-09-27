@@ -47,8 +47,7 @@ import { SocialSharing } from '@ionic-native/social-sharing'
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage,
-    StampConfirmPage
+    StampDialogPage
   ],
   providers: [
     StatusBar,
