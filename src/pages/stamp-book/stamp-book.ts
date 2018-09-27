@@ -14,23 +14,24 @@ export class StampBookPage {
   public stampList: any[] = [];
   public stampCount: number;
   public radioButtonValue: string = "all";
-  public ranking: number = 1;
+  public ranking: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public http: Http, public storage: Storage) {
   }
   
   ionViewDidEnter() {
-    this.updateRanking();
+    // this.updateRanking();
     this.updateList();
   }
 
   updateList() {
+    this.storage.get('stampCount').then((count) => {
+      this.stampCount = count;
+    })
     this.storage.get('spotList').then((csvData) => {
       this.stampList = [];
-      this.stampCount = 0;
       csvData.forEach((row) =>{
         if (row['Get'] == true) {
-          this.stampCount++
           this.stampList.push({
             ID: "No." + ("000" + row['ID']).slice(-3),
             Name: row['Name'],
@@ -51,7 +52,11 @@ export class StampBookPage {
   };
 
   updateRanking() {
-    this.http.post('https://<server_url>/dev/ranking', '{stampCount:2}').subscribe(res => {
+    let res = {
+      id: 0,
+      stampCount: this.stampCount
+    }
+    this.http.post('https://estamp-tokushima.appspot.com/dev/ranking', res).subscribe(res => {
       this.ranking = res['_body']['ranking'];
     });
   }
@@ -67,7 +72,7 @@ export class StampBookPage {
     let myModal = this.modalCtrl.create(GetStampPage, {});
     myModal.present();
     myModal.onDidDismiss(data => {
-      this.updateRanking();
+      // this.updateRanking();
       this.updateList();
     });
   }
