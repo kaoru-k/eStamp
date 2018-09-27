@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { NavController, AlertController, ModalController } from 'ionic-angular';
 import { GetStampPage } from '../get-stamp/get-stamp';
 import { Storage } from '@ionic/storage'
 
@@ -10,11 +9,31 @@ import { Storage } from '@ionic/storage'
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public storage: Storage) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public storage: Storage, private alertCtrl: AlertController) {
   }
 
   deleteSettings() {
-    this.storage.remove('ID');
+    let deleteConfirm = this.alertCtrl.create({
+      title: '設定の消去',
+      message: '設定を全消去してもよろしいですか？',
+      buttons: [
+        {
+          text: 'キャンセル',
+          role: 'cancel',
+          handler: () => {
+            alert("キャンセルしました");
+          }
+        },
+        {
+          text: '消去',
+          handler: () => {
+            alert("アプリを再起動してください");
+            this.storage.remove('ID');
+          }
+        }
+      ]
+    });
+    deleteConfirm.present();
   }
 
   getStampButtonOnClick() {
