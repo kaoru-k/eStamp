@@ -20,6 +20,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Device } from '@ionic-native/device'
 import { SocialSharing } from '@ionic-native/social-sharing'
+import { CopyrightNoticePage } from '../pages/copyright-notice/copyright-notice';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { SocialSharing } from '@ionic-native/social-sharing'
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage
+    StampDialogPage,
+    CopyrightNoticePage
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import { SocialSharing } from '@ionic-native/social-sharing'
     SettingsPage,
     TabsPage,
     GetStampPage,
-    StampDialogPage
+    StampDialogPage,
+    CopyrightNoticePage
   ],
   providers: [
     StatusBar,

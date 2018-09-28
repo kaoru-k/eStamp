@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ModalController } from 'ionic-angular';
-import { GetStampPage } from '../get-stamp/get-stamp';
 import { Storage } from '@ionic/storage'
+
+import { GetStampPage } from '../get-stamp/get-stamp';
+import { CopyrightNoticePage } from '../copyright-notice/copyright-notice'
 
 @Component({
   selector: 'page-settings',
@@ -10,6 +12,10 @@ import { Storage } from '@ionic/storage'
 export class SettingsPage {
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController, public storage: Storage, private alertCtrl: AlertController) {
+  }
+
+  copyrightNoticeButtonOnClick() {
+    this.navCtrl.push(CopyrightNoticePage);
   }
 
   deleteSettings() {
