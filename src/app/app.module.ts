@@ -21,6 +21,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Device } from '@ionic-native/device'
 import { SocialSharing } from '@ionic-native/social-sharing'
 import { CopyrightNoticePage } from '../pages/copyright-notice/copyright-notice';
+import { SafetyEvacuationAreaMapPage } from '../pages/safety-evacuation-area-map/safety-evacuation-area-map';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CopyrightNoticePage } from '../pages/copyright-notice/copyright-notice'
     TabsPage,
     GetStampPage,
     StampDialogPage,
-    CopyrightNoticePage
+    CopyrightNoticePage,
+    SafetyEvacuationAreaMapPage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,8 @@ import { CopyrightNoticePage } from '../pages/copyright-notice/copyright-notice'
     TabsPage,
     GetStampPage,
     StampDialogPage,
-    CopyrightNoticePage
+    CopyrightNoticePage,
+    SafetyEvacuationAreaMapPage
   ],
   providers: [
     StatusBar,

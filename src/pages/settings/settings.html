@@ -22,9 +22,9 @@
     <ion-list-header>
       防災ツール
     </ion-list-header>
-    <button ion-item icon-end>
+    <button ion-item icon-start (click)="safetyEvacuationAreaMapButtonOnClick()">
+      <ion-icon name="custom-icon-safetyevacuationarea"></ion-icon>
       避難場所マップ
-      <ion-icon name="alert" color="danger"></ion-icon>
     </button>
     <a ion-item icon-start href="https://anshin.pref.tokushima.jp/">
       安心とくしま
