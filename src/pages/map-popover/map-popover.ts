@@ -14,11 +14,11 @@ import { NavParams, ViewController } from 'ionic-angular';
     <ion-list>
     <ion-item>
     <ion-label>未訪問</ion-label>
-    <ion-checkbox [(ngModel)]="nonVisited" (ionChange)="close()" color="red"></ion-checkbox>
+    <ion-checkbox [(ngModel)]="nonVisited" (ionChange)="close()" color="blue"></ion-checkbox>
     </ion-item>
     <ion-item>
       <ion-label>訪問済み</ion-label>
-      <ion-checkbox [(ngModel)]="visited" (ionChange)="close()" color="blue"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="visited" (ionChange)="close()" color="red"></ion-checkbox>
     </ion-item>
   </ion-list>`
 })
