@@ -28,4 +28,8 @@ ion-icon {
     &[class*="custom-icon-stamp"] {
         mask-image: url(../assets/icon/printing-stamp-silhouette-variant.svg);
     }
+    &[class*="custom-icon-safetyevacuationarea"] {
+        mask-image: url(../assets/icon/PublicInformationSymbol_SafetyEvacuationArea.svg);
+        color: #00a54f
+    }
 }
