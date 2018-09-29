@@ -3,9 +3,9 @@ import { NavController, AlertController, ViewController, ModalController } from 
 import { Storage } from '@ionic/storage'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Http } from '@angular/http';
 
 import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
-
 /**
  * Generated class for the GetStampPage page.
  *
@@ -30,10 +30,11 @@ export class GetStampPage {
   sortData = [];
   sortDataDistance = [];
   csvData = [];
+  likeList = []
   cd = new CalcDistance;
   stampArea = 200;
 
-  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage, public modalCtrl: ModalController ) {
+  constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage, public modalCtrl: ModalController, public http: Http ) {
     this.storage.ready().then(() => {
       this.storage.get('spotList').then((lists) => {
         this.csvData = lists;
@@ -45,6 +46,9 @@ export class GetStampPage {
   updateDistance() {
     this.updateLocationButtonCaption = "更新中...";
     this.updateLocationButtonIsEnabled = false;
+    this.http.get('https://estamp-tokushima.appspot.com/dev/like/all').subscribe(res => {
+      this.likeList = res['_body'];
+    });
     this.geolocation.getCurrentPosition().then((position) => {
       let latlng = {
         lat: position.coords.latitude,
@@ -172,6 +176,8 @@ export class GetStampPage {
   async updateList() {
     if (this.radioButtonValue == "stamp") {
       this.viewList = this.sortData;
+    } else if(this.radioButtonValue == "like") {
+      this.viewList = this.likeList;
     } else {
       this.viewList = this.sortDataDistance;
     }

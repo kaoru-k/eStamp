@@ -55,6 +55,10 @@
       <ion-label>スタンプ番号順</ion-label>
       <ion-radio value="stamp" (ionSelect)="updateList()"></ion-radio>
     </ion-item>
+    <ion-item>
+      <ion-label>いいね数順</ion-label>
+      <ion-radio value="like" (ionSelect)="updateList()"></ion-radio>
+    </ion-item>
   </ion-list>
 
   <ion-item *ngFor="let item of viewList">
