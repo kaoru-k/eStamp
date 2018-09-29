@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
-
 import { GetStampPage } from '../get-stamp/get-stamp';
 import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
 
@@ -20,7 +19,7 @@ export class StampBookPage {
   }
   
   ionViewDidEnter() {
-    // this.updateRanking();
+    this.updateRanking();
     this.updateList();
   }
 
@@ -52,12 +51,14 @@ export class StampBookPage {
   };
 
   updateRanking() {
-    let res = {
-      id: 0,
-      stampCount: this.stampCount
-    }
-    this.http.post('https://estamp-tokushima.appspot.com/dev/ranking', res).subscribe(res => {
-      this.ranking = res['_body']['ranking'];
+    let body = JSON.stringify({
+      id: 100,
+      stampCount: 4
+    });
+    this.http.get('https://estamp-tokushima.appspot.com').subscribe(res => {
+      console.log("res");
+    }, error => {
+      console.log(JSON.stringify(error));
     });
   }
 
@@ -72,7 +73,7 @@ export class StampBookPage {
     let myModal = this.modalCtrl.create(GetStampPage, {});
     myModal.present();
     myModal.onDidDismiss(data => {
-      // this.updateRanking();
+      this.updateRanking();
       this.updateList();
     });
   }
