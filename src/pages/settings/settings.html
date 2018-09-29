@@ -20,41 +20,39 @@
 
   <ion-list>
     <ion-list-header>
-      防災ツール
-    </ion-list-header>
-    <button ion-item icon-start (click)="safetyEvacuationAreaMapButtonOnClick()">
-      <ion-icon name="custom-icon-safetyevacuationarea"></ion-icon>
-      避難場所マップ
-    </button>
-    <a ion-item icon-start href="https://anshin.pref.tokushima.jp/">
-      安心とくしま
-      <ion-icon name="open"></ion-icon>
-    </a>
-    <a ion-item icon-start href="http://www.jma-net.go.jp/tokushima/">
-      気象情報(徳島地方気象台)
-      <ion-icon name="open"></ion-icon>
-    </a>
-
-    <ion-list-header>
       観光・交通情報
     </ion-list-header>
     <a ion-item icon-end href="https://www.awanavi.jp/">
       阿波ナビ
-      <ion-icon name="open"></ion-icon>
     </a>
     <a ion-item icon-end href="http://www.jartic.or.jp/">
       道路交通情報(JARTIC)
-      <ion-icon name="open"></ion-icon>
     </a>
     <a ion-item icon-end href="https://transfer.navitime.biz/tokushima/smart/top/Top">
       とくしまバスNavi「いまドコなん？」
-      <ion-icon name="open"></ion-icon>
+    </a>
+    
+    <ion-list-header>
+      防災
+    </ion-list-header>
+    <!--  
+      <button ion-item icon-start (click)="safetyEvacuationAreaMapButtonOnClick()">
+        <ion-icon name="custom-icon-safetyevacuationarea"></ion-icon>
+        避難場所マップ
+      </button>
+    -->
+    <a ion-item icon-start href="https://anshin.pref.tokushima.jp/">
+      安心とくしま
+    </a>
+    <a ion-item icon-start href="http://www.jma-net.go.jp/tokushima/">
+      気象情報(徳島地方気象台)
     </a>
   
     <ion-list-header>
       設定
     </ion-list-header>
-    <button ion-item detail-none (click)="deleteSettings()">
+    <button ion-item detail-none icon-start (click)="deleteSettings()">
+      <ion-icon name="warning"></ion-icon>
       アプリを初期化する（要：再起動）
     </button>
     <button ion-item (click)="copyrightNoticeButtonOnClick()">
