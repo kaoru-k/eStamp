@@ -72,24 +72,29 @@ export class StampBookPage {
   };
 
   updateRanking() {
-    this.storage.get('stampCount').then((count) => {
+    this.storage.get('totalStampCount').then((count) => {
       if (count == '0') {
         this.ranking = "圏外"
       } else {
-        let body = JSON.stringify({
-          id: "100",
-          stampCount: count
-        });
-        let headers = new Headers({
-          'Content-Type': 'application/json'
+        this.storage.get('deviceId').then((deviceId) => {
+          if (deviceId == null) {
+            deviceId = 100;
+          }
+          let body = JSON.stringify({
+            id: deviceId,
+            stampCount: count
+          });
+          let headers = new Headers({
+            'Content-Type': 'application/json'
+          })
+          let options = new RequestOptions({headers:headers})
+          this.http.put('https://estamp-tokushima.appspot.com/api/dev/ranking', body, options).subscribe(res => {
+            this.ranking = res.json()['data']['ranking'] + "位"
+          }, error => {
+            this.ranking = "エラー"
+            console.log(JSON.stringify(error));
+          });
         })
-        let options = new RequestOptions({headers:headers})
-        this.http.put('https://estamp-tokushima.appspot.com/api/dev/ranking', body, options).subscribe(res => {
-          this.ranking = res.json()['data']['ranking'] + "位"
-        }, error => {
-          this.ranking = "エラー"
-          console.log(JSON.stringify(error));
-        });
       }
     })
   }
