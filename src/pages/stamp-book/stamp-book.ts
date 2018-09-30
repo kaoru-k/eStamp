@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
 import { GetStampPage } from '../get-stamp/get-stamp';
@@ -13,7 +13,7 @@ export class StampBookPage {
   public stampList: any[] = [];
   public stampCount: number;
   public radioButtonValue: string = "all";
-  public ranking: number;
+  public ranking: string = "--";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public http: Http, public storage: Storage) {
   }
@@ -51,15 +51,26 @@ export class StampBookPage {
   };
 
   updateRanking() {
-    let body = JSON.stringify({
-      id: 100,
-      stampCount: 4
-    });
-    this.http.get('https://estamp-tokushima.appspot.com').subscribe(res => {
-      console.log("res");
-    }, error => {
-      console.log(JSON.stringify(error));
-    });
+    this.storage.get('stampCount').then((count) => {
+      if (count == '0') {
+        this.ranking = "圏外"
+      } else {
+        let body = JSON.stringify({
+          id: "100",
+          stampCount: count
+        });
+        let headers = new Headers({
+          'Content-Type': 'application/json'
+        })
+        let options = new RequestOptions({headers:headers})
+        this.http.put('https://estamp-tokushima.appspot.com/api/dev/ranking', body, options).subscribe(res => {
+          this.ranking = res.json()['data']['ranking'] + "位"
+        }, error => {
+          this.ranking = "エラー"
+          console.log(JSON.stringify(error));
+        });
+      }
+    })
   }
 
   stampOnClick(id, name, get, date) {
