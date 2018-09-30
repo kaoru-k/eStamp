@@ -42,6 +42,7 @@ export class MyApp {
         console.log("loadCSV()");
         this.storage.clear().then(() => {
           this.storage.set('ID', this.device.uuid);
+          this.storage.set('totalStampCount', 0);
           this.storage.set('stampCount', 0);
           this.storage.set('bonusStampList', []);
           this.storage.set('bonusStampCount', 0);
