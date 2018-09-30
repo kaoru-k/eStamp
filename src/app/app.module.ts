@@ -13,7 +13,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { GetStampPage } from '../pages/get-stamp/get-stamp';
 import { StampDialogPage } from '../pages/stamp-dialog/stamp-dialog';
 import { CopyrightNoticePage } from '../pages/copyright-notice/copyright-notice';
-import { SafetyEvacuationAreaMapPage } from '../pages/safety-evacuation-area-map/safety-evacuation-area-map';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -36,8 +35,7 @@ import { File } from '@ionic-native/file';
     TabsPage,
     GetStampPage,
     StampDialogPage,
-    CopyrightNoticePage,
-    SafetyEvacuationAreaMapPage
+    CopyrightNoticePage
   ],
   imports: [
     BrowserModule,
@@ -56,8 +54,7 @@ import { File } from '@ionic-native/file';
     TabsPage,
     GetStampPage,
     StampDialogPage,
-    CopyrightNoticePage,
-    SafetyEvacuationAreaMapPage
+    CopyrightNoticePage
   ],
   providers: [
     StatusBar,
