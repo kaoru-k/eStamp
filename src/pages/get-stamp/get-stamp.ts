@@ -50,9 +50,24 @@ export class GetStampPage {
   updateDistance() {
     this.updateLocationButtonCaption = "更新中...";
     this.updateLocationButtonIsEnabled = false;
-    // this.http.get('https://estamp-tokushima.appspot.com/api/dev/like/all').subscribe(res => {
-    //   let resList = res.json()['data'];
-    // });
+    this.http.get('https://estamp-tokushima.appspot.com/api/dev/like/all').subscribe(res => {
+      let resList = res.json()['data'];
+      this.likeList = []
+      this.csvData.forEach((row) => {  
+        let likeCount = 0;
+        resList.forEach((resRow) => {
+          if (row['ID'] == resRow['spotId']) {
+            likeCount = resRow['likeCount']
+          }
+        },this)
+        this.likeList.push({
+          idString: "No." + ("000" + row['ID']).slice(-3),
+          Name: row['Name'],
+          DistanceString: likeCount
+        })
+      },this)
+      this.likeList.sort(function(a,b){return b['DistanceString'] - a['DistanceString']});
+    });
     this.geolocation.getCurrentPosition().then((position) => {
       let latlng = {
         lat: position.coords.latitude,
@@ -71,6 +86,7 @@ export class GetStampPage {
         };
         this.sortData.push({
           ID: row['ID'],
+          idString: "No." + ("000" + row['ID']).slice(-3),
           Name: row['Name'],
           Distance: distance,
           DistanceString: distanceString,
@@ -139,16 +155,20 @@ export class GetStampPage {
 
   updateStampCount() {
     this.storage.get('stampCount').then((value) =>{
-      let stampCount = value;
-      this.storage.set('stampCount', stampCount + 1);
+      this.storage.set('stampCount', value + 1);
+    });
+    this.storage.get('totalStampCount').then((value) =>{
+      this.storage.set('totalStampCount', value + 1);
     })
   }
 
   updateBonusStampCount() {
     this.storage.get('bonusStampCount').then((value) =>{
-      let stampCount = value;
-      this.storage.set('bonusStampCount', stampCount + 1);
-    })
+      this.storage.set('bonusStampCount', value + 1);
+    });
+    this.storage.get('totalStampCount').then((value) =>{
+      this.storage.set('totalStampCount', value + 1);
+    });
   }
 
   qrButtonOnClick() {
@@ -167,8 +187,8 @@ export class GetStampPage {
             }, this)
             if (!add) {
               let alert = this.alertCtrl.create({
-                title: '獲得済みスタンプ',
-                message: 'このスタンプはすでに獲得済みです',
+                title: 'ゲット済スタンプ',
+                message: 'このスタンプはすでにゲット済です',
                 buttons: ['OK']
               })
               alert.present();
@@ -182,7 +202,7 @@ export class GetStampPage {
               }
               let data = {
                 Type: "bonus",
-                Name: res['Name'],
+                Name: res['name'],
                 img: img,
                 Latitude: res['lat'],
                 Longitude: res['lng'],
