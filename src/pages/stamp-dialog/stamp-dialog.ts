@@ -15,19 +15,28 @@ import { File } from '@ionic-native/file';
   templateUrl: 'stamp-dialog.html',
 })
 export class StampDialogPage {
+  public stampType: string;
   public stampNo: string;
   public stampLocation: string;
+  public stampImage: string;
   public stampGetDate: string;
+  public stampText: string;
   public likeCount: number = 0;
+
+  stampId: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private socialSharing: SocialSharing, private alertCtrl: AlertController, private file: File) {
   }
 
   ngOnInit() {
     if (this.navParams.data) {
+      this.stampType = this.navParams.data.type;
+      this.stampId = this.navParams.data._id;
       this.stampNo = this.navParams.data.id;
       this.stampLocation = this.navParams.data.name;
+      this.stampImage = this.navParams.data.img;      
       this.stampGetDate = this.navParams.data.date;
+      this.stampText = this.navParams.data.text;
     }
   }
 
@@ -39,19 +48,19 @@ export class StampDialogPage {
         {
           text: 'はい',
           handler: () => {
-            console.log('はい clicked');
+            console.log(this.stampId + 'はい clicked');
           }
         },
         {
           text: 'いいえ',
           handler: () => {
-            console.log('いいえ clicked');
+            console.log(this.stampId + 'いいえ clicked');
           }
         },
         {
           text: 'わからない',
           handler: () => {
-            console.log('わからない clicked');
+            console.log(this.stampId + 'わからない clicked');
           }
         }
       ]
@@ -64,7 +73,7 @@ export class StampDialogPage {
     this.socialSharing.share(
     "とくしまeスタンプラリーで「"+ this.stampLocation + "」のスタンプをゲット！" ,
     null,
-    null,
+    this.stampImage,
     "https://estamp-tokushima.appspot.com"
     )
   }

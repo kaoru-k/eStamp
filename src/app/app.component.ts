@@ -43,9 +43,13 @@ export class MyApp {
         this.storage.clear().then(() => {
           this.storage.set('ID', this.device.uuid);
           this.storage.set('stampCount', 0);
+          this.storage.set('bonusStampList', []);
+          this.storage.set('bonusStampCount', 0);
+
           this.http.get('/assets/data/kankoshisetsu_edit.csv').subscribe(res => {
             let csvData = [];
             papa.parse(res['_body'] || '',{header: true}).data.forEach(function(row) {
+              row.Type = "normal";
               row.Get = false;
               row.GetDate = "";
               csvData.push(row);

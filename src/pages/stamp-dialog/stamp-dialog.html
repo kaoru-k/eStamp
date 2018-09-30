@@ -18,9 +18,9 @@
 
 <ion-content padding>
   <ion-item text-center>
-    <img src="assets/imgs/stamp/stamp_sample.png"  width="60%" />
+    <img [(src)]="stampImage" width="60%" />
   </ion-item>
-  <button ion-button icon-start (click)="questionButtonOnClick()">
+  <button ion-button icon-start *ngIf="stampType === 'normal'" (click)="questionButtonOnClick()">
     <ion-icon name="help"></ion-icon>
     質問に答える
   </button>
@@ -28,11 +28,11 @@
     <ion-icon name="share"></ion-icon>
     SNSでシェア
   </button>
-  <button ion-button icon-start (click)="likeButtonOnClick()">
+  <button ion-button icon-start *ngIf="stampType === 'normal'" (click)="likeButtonOnClick()">
     <ion-icon name="heart"></ion-icon>いいね！
   </button>
-  <ion-badge>{{likeCount}}</ion-badge>
-  <ion-item>
+  <ion-badge *ngIf="stampType === 'normal'">{{likeCount}}</ion-badge>
+  <ion-item *ngIf="stampType === 'normal'">
     <ion-label>スタンプ番号</ion-label>
     <div item-content>{{stampNo}}</div>
   </ion-item>
@@ -43,6 +43,10 @@
   <ion-item>
     <ion-label>入手日</ion-label>
     <div item-content>{{stampGetDate}}</div>
+  </ion-item>
+  <ion-item *ngIf="stampType === 'bonus'">
+    <ion-label>テキスト</ion-label>
+    <div item-content>{{stampText}}</div>
   </ion-item>
   <button ion-button block (click)="dismiss()">閉じる</button>
 </ion-content>

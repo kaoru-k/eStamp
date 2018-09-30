@@ -29,7 +29,7 @@
       </ion-row>
       <ion-row>
         <ion-col>ボーナススタンプ</ion-col>
-        <ion-col>0個</ion-col>
+        <ion-col>{{bonusStampCount}}個</ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
@@ -46,9 +46,20 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let item of stampList" col-6>
-        <ion-card (click)="stampOnClick(item.ID,item.Name,item.Get,item.GetDate)">
+        <ion-card (click)="stampOnClick(item.Type,item._id,item.ID,item.Name,item.img,item.Get,item.GetDate,null)">
           <img [(src)]="item.img" />
           {{item.ID}}<br />{{item.Name}}
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of bonusStampList" col-6>
+        <ion-card (click)="stampOnClick(item.Type,null,null,item.Name,item.img,true,item.GetDate,item.Text)">
+          <img [(src)]="item.img" />
+          {{item.Name}}
         </ion-card>
       </ion-col>
     </ion-row>

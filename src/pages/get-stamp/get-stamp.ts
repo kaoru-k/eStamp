@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ViewController, ModalController } from 'ionic-angular';
+import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Http } from '@angular/http';
 
 import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
 /**
@@ -27,15 +27,19 @@ export class GetStampPage {
   public viewList: any[] = [];
   public radioButtonValue: string = "distance";
   
+  bonusStampList = [];
   sortData = [];
   sortDataDistance = [];
   csvData = [];
   likeList = []
   cd = new CalcDistance;
-  stampArea = 200;
+  stampArea = 999;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage, public modalCtrl: ModalController, public http: Http ) {
     this.storage.ready().then(() => {
+      this.storage.get('bonusStampList').then((lists) => {
+        this.bonusStampList = lists;
+      })
       this.storage.get('spotList').then((lists) => {
         this.csvData = lists;
         this.updateDistance();
@@ -46,9 +50,9 @@ export class GetStampPage {
   updateDistance() {
     this.updateLocationButtonCaption = "更新中...";
     this.updateLocationButtonIsEnabled = false;
-    this.http.get('https://estamp-tokushima.appspot.com/dev/like/all').subscribe(res => {
-      this.likeList = res['_body'];
-    });
+    // this.http.get('https://estamp-tokushima.appspot.com/api/dev/like/all').subscribe(res => {
+    //   let resList = res.json()['data'];
+    // });
     this.geolocation.getCurrentPosition().then((position) => {
       let latlng = {
         lat: position.coords.latitude,
@@ -109,20 +113,28 @@ export class GetStampPage {
   async updateDB(id) {
     var dt = new Date();
     let newData = [];
+    let date;
+    let img;
 
     this.csvData.forEach(function(row) {
       if (row.ID != id) {
         newData.push(row);
       } else {
+        if (row.img == null) {
+          row.img = "assets/imgs/stamp/stamp_sample.png";
+        }
         row.Get = true;
         row.GetDate = [dt.getFullYear(), ("0" + (dt.getMonth() + 1)).slice(-2), ("0" + dt.getDate()).slice(-2)].join('/') + " " + ("0" + dt.getHours()).slice(-2) + ":" + ("0" + dt.getMinutes()).slice(-2);
         newData.push(row);
+        date = row.GetDate;
+        img = row.img;
       };
     }, this);
 
     this.csvData = newData;
     this.storage.set('spotList', this.csvData);
     this.updateStampCount();
+    return {date:date, img:img};
   }
 
   updateStampCount() {
@@ -132,15 +144,88 @@ export class GetStampPage {
     })
   }
 
+  updateBonusStampCount() {
+    this.storage.get('bonusStampCount').then((value) =>{
+      let stampCount = value;
+      this.storage.set('bonusStampCount', stampCount + 1);
+    })
+  }
+
   qrButtonOnClick() {
+    var dt = new Date();
+
     this.barcodeScanner.scan().then(barcodeData => {
-      console.log('Barcode data', barcodeData);
-      let alert = this.alertCtrl.create({
-        title: 'Barcode Data',
-        subTitle: barcodeData.text,
-        buttons: ['Close']
-      });
-      alert.present();
+      if (barcodeData.cancelled != true) {
+        let res = JSON.parse(barcodeData.text);
+        if (res['version'] == 'dev') {
+          if (res['type'] == 'bonus') {
+            let add = true
+            this.bonusStampList.forEach(function(row) {
+              if (row['Name'] == res['Name']) {
+                add = false;
+              }
+            }, this)
+            if (!add) {
+              let alert = this.alertCtrl.create({
+                title: '獲得済みスタンプ',
+                message: 'このスタンプはすでに獲得済みです',
+                buttons: ['OK']
+              })
+              alert.present();
+            } else {
+              let img;
+              if (res['img'] == null) {
+                img = "assets/imgs/stamp/stamp_sample_bonus.png";
+              }
+              else {
+                img = res['img'];
+              }
+              let data = {
+                Type: "bonus",
+                Name: res['Name'],
+                img: img,
+                Latitude: res['lat'],
+                Longitude: res['lng'],
+                GetDate: [dt.getFullYear(), ("0" + (dt.getMonth() + 1)).slice(-2), ("0" + dt.getDate()).slice(-2)].join('/') + " " + ("0" + dt.getHours()).slice(-2) + ":" + ("0" + dt.getMinutes()).slice(-2),
+                Text: res['text']
+              }
+              this.bonusStampList.push(data);
+              this.storage.set('bonusStampList', this.bonusStampList);
+              this.updateBonusStampCount();
+
+              let myModal = this.modalCtrl.create(StampDialogPage, {
+                type: 'bonus',
+                _id: null,
+                id: null,
+                name: res ['Name'],
+                img: data.img,
+                date: data.GetDate,
+                text: res['text']
+              });
+              myModal.present();
+              myModal.onDidDismiss(data => {
+                this.updateDistance();
+              });
+            }
+          } else if (res['type'] == 'normal') {
+
+          } else {
+            let alert = this.alertCtrl.create({
+              title: 'エラー',
+              message: '正しいバーコードではありません',
+              buttons: ['OK']
+            })
+            alert.present();
+          }
+        } else {
+          let alert = this.alertCtrl.create({
+            title: 'エラー',
+            message: '正しいバーコードではありません',
+            buttons: ['OK']
+          })
+          alert.present();
+        }
+      }
     }).catch((err) => {
       let alert = this.alertCtrl.create({
         title: 'Error',
@@ -158,13 +243,15 @@ export class GetStampPage {
   getStampButtonOnClick() {
     this.getStampButtonIsEnabled = false;
     if (this.target['Distance'] <= this.stampArea && this.target['Get'] == false) {
-      this.updateDB(this.target['ID']).then(() => {
-        // let alert = this.alertCtrl.create({
-        //   title: 'スタンプゲット',
-        //   subTitle: this.target['Name'] + "のスタンプをゲットしました！",
-        //   buttons: ['閉じる']
-        // });
-        let myModal = this.modalCtrl.create(StampDialogPage, {});
+      this.updateDB(this.target['ID']).then((data) => {
+        let myModal = this.modalCtrl.create(StampDialogPage, {
+          type: 'normal',
+          _id: this.target['ID'],
+          id: "No." + ("000" + this.target['ID']).slice(-3),
+          name: this.target['Name'],
+          img: data.img,
+          date: data.date
+        });
         myModal.present();
         myModal.onDidDismiss(data => {
           this.updateDistance();

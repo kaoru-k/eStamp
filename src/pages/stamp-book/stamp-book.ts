@@ -11,7 +11,9 @@ import { StampDialogPage } from '../stamp-dialog/stamp-dialog';
 })
 export class StampBookPage {
   public stampList: any[] = [];
+  public bonusStampList: any[] = [];
   public stampCount: number;
+  public bonusStampCount: number;
   public radioButtonValue: string = "all";
   public ranking: string = "--";
 
@@ -27,19 +29,26 @@ export class StampBookPage {
     this.storage.get('stampCount').then((count) => {
       this.stampCount = count;
     })
+    this.storage.get('bonusStampCount').then((count) => {
+      this.bonusStampCount = count;
+    })
     this.storage.get('spotList').then((csvData) => {
       this.stampList = [];
       csvData.forEach((row) =>{
         if (row['Get'] == true) {
           this.stampList.push({
+            Type: row['Type'],
+            _id: row['ID'],
             ID: "No." + ("000" + row['ID']).slice(-3),
             Name: row['Name'],
+            img: row['img'],
             Get: row['Get'],
             GetDate: row['GetDate'],
-            img: "assets/imgs/stamp/stamp_sample.png"
           });
-        } else if (this.radioButtonValue == "all" ) {
+        } else if (this.radioButtonValue == "all") {
           this.stampList.push({
+            Type: row['Type'],
+            _id: row['ID'],            
             ID: "No." + ("000" + row['ID']).slice(-3),
             Name: row['Name'],
             Get: row['Get'],
@@ -47,6 +56,18 @@ export class StampBookPage {
           });
         };
       });
+    });
+    this.storage.get('bonusStampList').then((stampData) => {
+      this.bonusStampList = [];
+      stampData.forEach((row) => {
+        this.bonusStampList.push({
+          Type: row['Type'],
+          Name: row['Name'],
+          img:  row['img'],
+          GetDate: row['GetDate'],
+          Text: row['Text'],
+        })
+      }, this)
     });
   };
 
@@ -73,9 +94,9 @@ export class StampBookPage {
     })
   }
 
-  stampOnClick(id, name, get, date) {
+  stampOnClick(type, _id, id, name, img, get, date, text) {
     if (get == true) {
-      let myModal = this.modalCtrl.create(StampDialogPage, {id: id, name: name, date: date});
+      let myModal = this.modalCtrl.create(StampDialogPage, {type: type,_id: _id, id: id, name: name,img: img, date: date, text: text});
       myModal.present();
     }
   }
