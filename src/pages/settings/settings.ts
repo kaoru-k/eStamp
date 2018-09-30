@@ -4,7 +4,6 @@ import { Storage } from '@ionic/storage'
 
 import { GetStampPage } from '../get-stamp/get-stamp';
 import { CopyrightNoticePage } from '../copyright-notice/copyright-notice'
-import { SafetyEvacuationAreaMapPage } from '../safety-evacuation-area-map/safety-evacuation-area-map';
 
 @Component({
   selector: 'page-settings',
@@ -13,10 +12,6 @@ import { SafetyEvacuationAreaMapPage } from '../safety-evacuation-area-map/safet
 export class SettingsPage {
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController, public storage: Storage, private alertCtrl: AlertController) {
-  }
-
-  safetyEvacuationAreaMapButtonOnClick() {
-    this.navCtrl.push(SafetyEvacuationAreaMapPage);
   }
 
   copyrightNoticeButtonOnClick() {
