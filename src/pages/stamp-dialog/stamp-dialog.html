@@ -28,7 +28,7 @@
     <ion-icon name="share"></ion-icon>
     SNSでシェア
   </button>
-  <button ion-button icon-start *ngIf="stampType === 'normal'" (click)="likeButtonOnClick()">
+  <button ion-button icon-start *ngIf="stampType === 'normal'" [disabled]="!likeButtonIsEnable" (click)="likeButtonOnClick()">
     <ion-icon name="heart"></ion-icon>いいね！
   </button>
   <ion-badge *ngIf="stampType === 'normal'">{{likeCount}}</ion-badge>
