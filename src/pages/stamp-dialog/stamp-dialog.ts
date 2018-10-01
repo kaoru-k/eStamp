@@ -106,6 +106,7 @@ export class StampDialogPage {
         message: error,
         buttons:['OK']
       })
+      alert.present();
     });
   }
 
