@@ -76,7 +76,7 @@ export class StampBookPage {
       if (count == '0') {
         this.ranking = "圏外"
       } else {
-        this.storage.get('deviceId').then((deviceId) => {
+        this.storage.get('ID').then((deviceId) => {
           if (deviceId == null) {
             deviceId = 100;
           }
