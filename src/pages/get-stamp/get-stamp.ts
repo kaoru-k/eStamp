@@ -33,7 +33,7 @@ export class GetStampPage {
   csvData = [];
   likeList = []
   cd = new CalcDistance;
-  stampArea = 999;
+  stampArea = 200;
 
   constructor(public navCtrl: NavController, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController, public geolocation: Geolocation, public viewCtrl: ViewController, public storage: Storage, public modalCtrl: ModalController, public http: Http ) {
     this.storage.ready().then(() => {
@@ -217,7 +217,7 @@ export class GetStampPage {
                 type: 'bonus',
                 _id: null,
                 id: null,
-                name: res ['Name'],
+                name: res ['name'],
                 img: data.img,
                 date: data.GetDate,
                 text: res['text']
