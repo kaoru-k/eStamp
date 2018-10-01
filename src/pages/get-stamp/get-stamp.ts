@@ -181,7 +181,7 @@ export class GetStampPage {
           if (res['type'] == 'bonus') {
             let add = true
             this.bonusStampList.forEach(function(row) {
-              if (row['Name'] == res['Name']) {
+              if (row['Name'] == res['name']) {
                 add = false;
               }
             }, this)
